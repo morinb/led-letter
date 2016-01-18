@@ -7,20 +7,21 @@ import java.util.EventObject;
  */
 public class LedLetterModelEvent extends EventObject {
 
-    private final LedLetterModel ledLetterModel;
+
+    private final LedLetterModel model;
 
     /**
      * Constructs a prototypical Event.
      *
-     * @param source The object on which the Event initially occurred.
+     * @param model The object on which the Event initially occurred.
      * @throws IllegalArgumentException if source is null.
      */
-    public LedLetterModelEvent(LedLetterModel source) {
-        super(source);
-        this.ledLetterModel = source;
+    public LedLetterModelEvent(LedLetterModel model) {
+        super(model);
+        this.model = model;
     }
 
-    public LedLetterModel getLedLetterModel() {
-        return ledLetterModel;
+    public LedLetterModel getModel() {
+        return model;
     }
 }

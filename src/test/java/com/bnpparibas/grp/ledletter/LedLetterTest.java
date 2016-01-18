@@ -2,13 +2,8 @@ package com.bnpparibas.grp.ledletter;
 
 import com.bnpparibas.grp.ledletter.fonts.LedLetterFont;
 
-import javax.swing.AbstractAction;
 import javax.swing.JFrame;
-import javax.swing.SwingUtilities;
-import javax.swing.Timer;
 import javax.swing.WindowConstants;
-import java.awt.Font;
-import java.awt.event.ActionEvent;
 
 /**
  * @author morinb.
@@ -19,7 +14,7 @@ public class LedLetterTest {
         JFrame f = new JFrame("LedTest");
 
 
-        final LedLetterModel model = new DefaultLedLetterModel(5, 7);
+        final LedLetterModel model = new DefaultLedLetterModel(5, 7, 5, 5);
         final LedLetter ledLetter = new LedLetter(model);
 
         f.add(ledLetter);

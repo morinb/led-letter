@@ -1,16 +1,11 @@
 package com.bnpparibas.grp.ledletter;
 
-import com.bnpparibas.grp.ledletter.factory.OvalLedFactory;
-import com.bnpparibas.grp.ledletter.factory.SquareLedFactory;
+import com.bnpparibas.grp.ledletter.factory.LedDrawerFactory;
 import com.bnpparibas.grp.ledletter.fonts.LedLetterFont;
 
-import javax.swing.AbstractAction;
 import javax.swing.JFrame;
-import javax.swing.SwingUtilities;
-import javax.swing.Timer;
 import javax.swing.WindowConstants;
 import java.awt.*;
-import java.awt.event.ActionEvent;
 
 /**
  * @author morinb.
@@ -26,9 +21,9 @@ public class LedLetterPanelTest {
 
 
         for (int i = 0; i < ledLetters.length; i++) {
-            final LedLetterModel model = new DefaultLedLetterModel(5,7);
-            ledLetters[i] = new LedLetter(model, LedFactory.get(LedFactory.Type.SQUARE));
-            controllerController.addController(new LedLetterController(ledLetters[i], LedLetterFont.LLF_5x7));
+            final LedLetterModel model = new DefaultLedLetterModel(15, 32, 5, 5);
+            ledLetters[i] = new LedLetter(model, LedDrawerFactory.getDefaultDrawer());
+            controllerController.addController(new LedLetterController(ledLetters[i], LedLetterFont.LLF_15x32));
             controllerController.setSpeed(150);
             f.add(ledLetters[i]);
         }
