@@ -14,6 +14,7 @@ public abstract class Led extends JComponent {
     private Color foregroundColor;
     private Color backgroundColor;
     private boolean on;
+    private boolean refreshing;
 
     public Led() {
         this(5, 5);
@@ -40,7 +41,7 @@ public abstract class Led extends JComponent {
     }
 
     public void setOn(boolean on) {
-        if(this.on != on) {
+        if (this.on != on) {
             this.on = on;
             repaint();
         }
@@ -72,9 +73,20 @@ public abstract class Led extends JComponent {
         this.backgroundColor = backgroundColor;
     }
 
+    public void setRefreshing(boolean refreshing) {
+        this.refreshing = refreshing;
+    }
+
+    public boolean isRefreshing() {
+        return refreshing;
+    }
+
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
+        if (isRefreshing()) {
+            return;
+        }
         final Graphics2D g2 = (Graphics2D) g;
 
         g2.setPaint(backgroundColor);

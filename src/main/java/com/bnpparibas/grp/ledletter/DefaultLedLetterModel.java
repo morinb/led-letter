@@ -6,14 +6,13 @@ import javax.swing.event.EventListenerList;
  * @author morinb.
  */
 public class DefaultLedLetterModel implements LedLetterModel {
-    public static final int COLUMNS = 5;
-    public static final int ROWS = 7;
-    private boolean[][] value = new boolean[ROWS][COLUMNS];
+    private boolean[][] value;
     private EventListenerList listenerList = new EventListenerList();
 
-    public DefaultLedLetterModel() {
-        for (int r = 0; r < ROWS; r++) {
-            for (int c = 0; c < COLUMNS; c++) {
+    public DefaultLedLetterModel(int columnCount, int rowCount) {
+        value = new boolean[rowCount][columnCount];
+        for (int r = 0; r < rowCount; r++) {
+            for (int c = 0; c < columnCount; c++) {
                 value[r][c] = false;
             }
         }
@@ -54,6 +53,19 @@ public class DefaultLedLetterModel implements LedLetterModel {
         for (LedLetterModelListener listener : listenerList.getListeners(LedLetterModelListener.class)) {
             listener.ledLetterChanged(new LedLetterModelEvent(this));
         }
+    }
+
+    @Override
+    public void setValues(boolean[][] values) {
+        int rowCount = values.length;
+        int columnCount = values[0].length;
+        value = new boolean[rowCount][columnCount];
+        for (int r = 0; r < rowCount; r++) {
+            for (int c = 0; c < columnCount; c++) {
+                value[r][c] = values[r][c];
+            }
+        }
+        fireValueChanged();
     }
 
     @Override

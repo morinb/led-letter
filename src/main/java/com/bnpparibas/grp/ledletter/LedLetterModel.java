@@ -64,4 +64,6 @@ public interface LedLetterModel {
      * @return the String representation of the model.
      */
     String toString();
+
+    void setValues(boolean[][] values);
 }

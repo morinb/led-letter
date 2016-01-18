@@ -1,7 +1,7 @@
 package com.bnpparibas.grp.ledletter.fonts;
 
 /**
- * @author morinb.
+ * Adaptation of jfxtras MatrixPanel
  */
 public interface LetterDescription {
     String getHexLetter();

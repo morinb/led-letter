@@ -1,18 +1,24 @@
 package com.bnpparibas.grp.ledletter;
 
+/**
+ * Adaptation of jfxtras MatrixPanel
+ */
 public class HexUtils {
-    public static int hex2Decimal(String s) {
-        int decimal = Integer.parseInt(s, 16);
-        return decimal;
+    public static byte[] toBytes(String hexString) {
+        return toBytes(hexString.split("\\s"));
     }
 
-    public static String String2Binary(String s) {
-        return Integer.toBinaryString(hex2Decimal(s));
-    }
-
-    public static String hex2bin(String s) {
-        String s1 = String2Binary(s);
-        String ss1 = ("00000000".substring(0, 8 - s1.length())).concat(s1);
-        return ss1;
+    public static byte[] toBytes(String[] bytes) {
+        byte[] result = new byte[bytes.length];
+        int i = 0;
+        for (String bStr : bytes) {
+            int n = 0;
+            if (!(bStr.equals("0") || bStr.equals("00"))) {
+                n = Byte.parseByte(bStr.substring(0, 1), 16);
+                n = 16 * n + Byte.parseByte(bStr.substring(1), 16);
+            }
+            result[i++] = (byte) n;
+        }
+        return result;
     }
 }

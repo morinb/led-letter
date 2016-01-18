@@ -3,7 +3,7 @@ package com.bnpparibas.grp.ledletter;
 import com.bnpparibas.grp.ledletter.factory.ILedFactory;
 
 import javax.swing.JComponent;
-import java.awt.Dimension;
+import java.awt.*;
 
 import static com.bnpparibas.grp.ledletter.LedFactory.Type.OUTLINED_OVAL;
 import static com.bnpparibas.grp.ledletter.LedFactory.Type.OVAL;
@@ -16,6 +16,7 @@ public class LedLetter extends JComponent implements LedLetterModelListener {
     private LedLetterModel model;
     private Led[] leds;
     private ILedFactory ledFactory;
+    private boolean refreshing;
 
     public LedLetter() {
         this(null, null);
@@ -43,13 +44,34 @@ public class LedLetter extends JComponent implements LedLetterModelListener {
         setLayout(null);
     }
 
+    public void setForegroundColor(Color color) {
+        for (Led led : leds) {
+            led.setForegroundColor(color);
+        }
+    }
+
+    public void setBackgroundColor(Color color) {
+        for (Led led : leds) {
+            led.setBackgroundColor(color);
+        }
+    }
+
     private ILedFactory createDefaultLedFactory() {
         return LedFactory.get(OUTLINED_OVAL);
     }
 
     private LedLetterModel createDefaultLedLetterModel() {
-        return new DefaultLedLetterModel();
+        return new DefaultLedLetterModel(5, 7);
     }
+
+    public void setRefreshing(boolean refreshing) {
+        this.refreshing = refreshing;
+    }
+
+    public boolean isRefreshing() {
+        return refreshing;
+    }
+
 
     public void setModel(LedLetterModel model) {
         if (model == null) {
@@ -100,13 +122,29 @@ public class LedLetter extends JComponent implements LedLetterModelListener {
         final int columnCount = e.getLedLetterModel().getColumnCount();
         final int rowCount = e.getLedLetterModel().getRowCount();
 
+        setRefreshing(columnCount, rowCount, true);
+
         for (int row = 0; row < rowCount; row++) {
             for (int column = 0; column < columnCount; column++) {
+
                 final int index = column + columnCount * row;
                 final boolean status = e.getLedLetterModel().getValueAt(row, column);
 
                 leds[index].setOn(status);
 
+            }
+        }
+
+        setRefreshing(columnCount, rowCount, false);
+
+
+    }
+
+    private void setRefreshing(int columnCount, int rowCount, boolean refreshing) {
+        for (int row = 0; row < rowCount; row++) {
+            for (int column = 0; column < columnCount; column++) {
+                final int index = column + columnCount * row;
+                leds[index].setRefreshing(refreshing);
             }
         }
     }

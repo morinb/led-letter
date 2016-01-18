@@ -3,6 +3,7 @@ package com.bnpparibas.grp.ledletter;
 import com.google.common.collect.Lists;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.util.Collection;
 import java.util.List;
@@ -33,6 +34,19 @@ public class LedLetterControllerController {
             scrollTimer.setDelay(speed);
         }
     }
+
+    public void setForegroundColor(Color color) {
+        for (LedLetterController llc : controllers) {
+            llc.setForegroundColor(color);
+        }
+    }
+
+    public void setBackgroungColor(Color color) {
+        for (LedLetterController llc : controllers) {
+            llc.setBackgroundColor(color);
+        }
+    }
+
 
     public void displayString(final String message) {
         final int messageLength = message.length();

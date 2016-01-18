@@ -9,8 +9,7 @@ import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 import javax.swing.Timer;
 import javax.swing.WindowConstants;
-import java.awt.Dimension;
-import java.awt.FlowLayout;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 
 /**
@@ -27,25 +26,25 @@ public class LedLetterPanelTest {
 
 
         for (int i = 0; i < ledLetters.length; i++) {
-            final LedLetterModel model = new DefaultLedLetterModel();
+            final LedLetterModel model = new DefaultLedLetterModel(5,7);
             ledLetters[i] = new LedLetter(model, LedFactory.get(LedFactory.Type.SQUARE));
             controllerController.addController(new LedLetterController(ledLetters[i], LedLetterFont.LLF_5x7));
+            controllerController.setSpeed(150);
             f.add(ledLetters[i]);
         }
 
-        double prefW = 0;
-        for (LedLetter ledLetter : ledLetters) {
-            prefW += 1 + ledLetter.getPreferredSize().getWidth();
-        }
-        double prefH = 100;
+        double prefW = 1200;
 
-        f.setPreferredSize(new Dimension((int) prefW+100, (int) prefH));
+        double prefH = 300;
+
+        f.setPreferredSize(new Dimension((int) prefW + 100, (int) prefH));
 
         f.pack();
         f.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         f.setVisible(true);
 
 
-        controllerController.displayString("Coucou Mourad !");
+        controllerController.displayString("Hi my name is Led-Letter !");
+
     }
 }
