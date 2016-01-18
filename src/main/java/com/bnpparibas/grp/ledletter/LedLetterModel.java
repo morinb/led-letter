@@ -44,5 +44,19 @@ public interface LedLetterModel {
      */
     int getColumnCount();
 
+    /**
+     * Adds a listener to the list that is notified each time a change
+     * to the data model occurs.
+     * @param l the LedLetterModelListener
+     */
+    void addLedLetterModelListener(LedLetterModelListener l);
+
+    /**
+     * Removes a listener from the list that is notified each time a
+     * change to the data model occurs.
+     * @param l the LedLetterModelListener
+     */
+    void removeLedLetterModelListener(LedLetterModelListener l);
+
 
 }
