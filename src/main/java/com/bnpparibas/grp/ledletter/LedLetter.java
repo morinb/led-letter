@@ -3,7 +3,9 @@ package com.bnpparibas.grp.ledletter;
 import com.bnpparibas.grp.ledletter.factory.ILedFactory;
 
 import javax.swing.JComponent;
+import java.awt.Dimension;
 
+import static com.bnpparibas.grp.ledletter.LedFactory.Type.OUTLINED_OVAL;
 import static com.bnpparibas.grp.ledletter.LedFactory.Type.OVAL;
 
 /**
@@ -13,19 +15,36 @@ public class LedLetter extends JComponent implements LedLetterModelListener {
     public static final String PROPERTY_CHANGE_MODEL = "model";
     private LedLetterModel model;
     private Led[] leds;
+    private ILedFactory ledFactory;
 
     public LedLetter() {
-        this(null);
+        this(null, null);
+    }
+
+    public LedLetter(ILedFactory ledFactory) {
+        this(null, ledFactory);
     }
 
     public LedLetter(LedLetterModel model) {
+        this(model, null);
+    }
+
+    public LedLetter(LedLetterModel model, ILedFactory ledFactory) {
+        if (ledFactory == null) {
+            ledFactory = createDefaultLedFactory();
+        }
 
         if (model == null) {
             model = createDefaultLedLetterModel();
         }
 
+        setLedFactory(ledFactory);
         setModel(model);
         setLayout(null);
+    }
+
+    private ILedFactory createDefaultLedFactory() {
+        return LedFactory.get(OUTLINED_OVAL);
     }
 
     private LedLetterModel createDefaultLedLetterModel() {
@@ -50,12 +69,14 @@ public class LedLetter extends JComponent implements LedLetterModelListener {
             final int rowCount = model.getRowCount();
 
             leds = new Led[columnCount * rowCount];
-            final ILedFactory ovalLedFactory = LedFactory.get(OVAL);
-            final Led led = ovalLedFactory.getLed(10, 10);
+            final Led led = ledFactory.getLed();
             final int ledWidth = led.getWidth();
             final int ledHeight = led.getHeight();
+
+            setPreferredSize(new Dimension(ledWidth * columnCount, ledHeight * rowCount));
+
             for (int i = 0; i < leds.length; i++) {
-                leds[i] = ovalLedFactory.getLed(10, 10);
+                leds[i] = ledFactory.getLed();
                 int row = (i / (columnCount)) * ledHeight;
                 int col = (i % (columnCount)) * ledWidth;
                 leds[i].setBounds(col, row, ledWidth, ledHeight);
@@ -88,5 +109,13 @@ public class LedLetter extends JComponent implements LedLetterModelListener {
 
             }
         }
+    }
+
+    public void setLedFactory(ILedFactory ledFactory) {
+        this.ledFactory = ledFactory;
+    }
+
+    public ILedFactory getLedFactory() {
+        return ledFactory;
     }
 }
