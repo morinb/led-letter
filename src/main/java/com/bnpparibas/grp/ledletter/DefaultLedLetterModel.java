@@ -1,5 +1,7 @@
 package com.bnpparibas.grp.ledletter;
 
+import com.bnpparibas.grp.ledletter.fonts.LedLetterFont;
+
 import javax.swing.event.EventListenerList;
 
 /**
@@ -9,12 +11,16 @@ public class DefaultLedLetterModel implements LedLetterModel {
     private boolean[][] currentValues;
     private boolean[][] oldValues;
     private EventListenerList listenerList = new EventListenerList();
+    private final LedLetterFont ledLetterFont;
     private int ledWidth;
     private int ledHeight;
 
-    public DefaultLedLetterModel(int columnCount, int rowCount, int ledWidth, int ledHeight) {
+    public DefaultLedLetterModel(LedLetterFont ledLetterFont, int ledWidth, int ledHeight) {
+        this.ledLetterFont = ledLetterFont;
         this.ledWidth = ledWidth;
         this.ledHeight = ledHeight;
+        int rowCount = ledLetterFont.rowCount();
+        int columnCount = ledLetterFont.columnCount();
         currentValues = new boolean[rowCount][columnCount];
         oldValues = new boolean[rowCount][columnCount];
         for (int r = 0; r < rowCount; r++) {
@@ -113,5 +119,10 @@ public class DefaultLedLetterModel implements LedLetterModel {
         }
 
         return sb.toString();
+    }
+
+    @Override
+    public LedLetterFont getLedLetterFont() {
+        return ledLetterFont;
     }
 }

@@ -15,12 +15,20 @@ public class LedLetterControllerController {
     private List<LedLetterController> controllers;
     private Timer scrollTimer;
     private int speed = 100;
+    private Color backgroundColor;
+    private Color foregroundColor;
 
     public LedLetterControllerController() {
         controllers = Lists.newArrayList();
     }
 
     public void addController(LedLetterController controller) {
+        if (!controller.isForegroundColorSet()) {
+            controller.setForegroundColor(foregroundColor);
+        }
+        if (!controller.isBackgroundColorSet()) {
+            controller.setBackgroundColor(backgroundColor);
+        }
         controllers.add(controller);
     }
 
@@ -36,12 +44,14 @@ public class LedLetterControllerController {
     }
 
     public void setForegroundColor(Color color) {
+        this.foregroundColor = color;
         for (LedLetterController llc : controllers) {
             llc.setForegroundColor(color);
         }
     }
 
     public void setBackgroungColor(Color color) {
+        this.backgroundColor = color;
         for (LedLetterController llc : controllers) {
             llc.setBackgroundColor(color);
         }

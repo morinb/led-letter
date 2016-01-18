@@ -2,6 +2,7 @@ package com.bnpparibas.grp.ledletter;
 
 import com.bnpparibas.grp.ledletter.drawer.ILedDrawer;
 import com.bnpparibas.grp.ledletter.factory.LedDrawerFactory;
+import com.bnpparibas.grp.ledletter.fonts.LedLetterFont;
 
 import javax.swing.*;
 import java.awt.*;
@@ -13,10 +14,10 @@ import java.awt.image.BufferedImage;
 public class LedLetter extends JComponent implements LedLetterModelListener {
     public static final String PROPERTY_CHANGE_MODEL = "model";
     private LedLetterModel model;
-    private boolean refreshing;
-    private Color foregroundColor;
-    private Color backgroundColor;
     private ILedDrawer ledDrawer;
+    private boolean foregroundColorSet = false;
+    private boolean backgroundColorSet = false;
+
 
     public LedLetter() {
         this(null, null);
@@ -48,26 +49,21 @@ public class LedLetter extends JComponent implements LedLetterModelListener {
         return LedDrawerFactory.getDefaultDrawer();
     }
 
-    public void setForegroundColor(Color color) {
-        foregroundColor = color;
-    }
-
-    public void setBackgroundColor(Color color) {
-        backgroundColor = color;
-    }
-
     private LedLetterModel createDefaultLedLetterModel() {
-        return new DefaultLedLetterModel(5, 7, 5, 5);
+        return new DefaultLedLetterModel(LedLetterFont.LLF_5x7, 5, 5);
     }
 
-    public void setRefreshing(boolean refreshing) {
-        this.refreshing = refreshing;
+    @Override
+    public void setForeground(Color fg) {
+        super.setForeground(fg);
+        foregroundColorSet = true;
     }
 
-    public boolean isRefreshing() {
-        return refreshing;
+    @Override
+    public void setBackground(Color bg) {
+        super.setBackground(bg);
+        backgroundColorSet = true;
     }
-
 
     public void setModel(LedLetterModel model) {
         if (model == null) {
@@ -107,15 +103,15 @@ public class LedLetter extends JComponent implements LedLetterModelListener {
         final int imageHeight = ledHeight * model.getRowCount();
         final BufferedImage bi = new BufferedImage(imageWidth, imageHeight, BufferedImage.TYPE_3BYTE_BGR);
         final Graphics2D g2 = bi.createGraphics();
+        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
         for (int row = 0; row < model.getRowCount(); row++) {
             for (int col = 0; col < model.getColumnCount(); col++) {
                 int x = ledWidth * col;
                 int y = ledHeight * row;
                 if (model.getOldValues()[row][col] != model.getValues()[row][col]) {
-
-                    g2.setPaint(model.getValues()[row][col] ? foregroundColor : backgroundColor);
-                    ledDrawer.drawLed(g2, x, y, ledWidth, ledHeight);
+                    g2.setPaint(model.getValues()[row][col] ? getForeground() : getBackground());
+                    ledDrawer.drawLed(g2, x - 1, y - 1, ledWidth + 1, ledHeight + 1);
                 }
             }
         }
@@ -139,4 +135,12 @@ public class LedLetter extends JComponent implements LedLetterModelListener {
         this.ledDrawer = ledDrawer;
     }
 
+
+    public boolean isForegroundColorSet() {
+        return foregroundColorSet;
+    }
+
+    public boolean isBackgroundColorSet() {
+        return backgroundColorSet;
+    }
 }

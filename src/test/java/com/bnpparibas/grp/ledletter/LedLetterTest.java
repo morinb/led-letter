@@ -4,6 +4,7 @@ import com.bnpparibas.grp.ledletter.fonts.LedLetterFont;
 
 import javax.swing.JFrame;
 import javax.swing.WindowConstants;
+import java.awt.*;
 
 /**
  * @author morinb.
@@ -14,7 +15,7 @@ public class LedLetterTest {
         JFrame f = new JFrame("LedTest");
 
 
-        final LedLetterModel model = new DefaultLedLetterModel(5, 7, 5, 5);
+        final LedLetterModel model = new DefaultLedLetterModel(LedLetterFont.LLF_15x32, 5, 5);
         final LedLetter ledLetter = new LedLetter(model);
 
         f.add(ledLetter);
@@ -23,8 +24,9 @@ public class LedLetterTest {
         f.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         f.setVisible(true);
 
-        LedLetterController controller = new LedLetterController(ledLetter, LedLetterFont.LLF_5x7);
-        controller.displayChar('M');
+        LedLetterController controller = new LedLetterController(ledLetter);
+        controller.setForegroundColor(Color.RED);
+        controller.displayChar(' ');
     }
 
 }

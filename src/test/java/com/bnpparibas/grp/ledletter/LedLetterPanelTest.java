@@ -17,13 +17,39 @@ public class LedLetterPanelTest {
         f.setLayout(new FlowLayout(FlowLayout.CENTER, 0, 0));
 
         final LedLetterControllerController controllerController = new LedLetterControllerController();
-        final LedLetter[] ledLetters = new LedLetter[6];
+        //controllerController.setBackgroungColor(Color.black);
+        Color VINGT = new Color(1.0f, 0.0f, 0.0f, 0.2f);
+        Color TRENTE = new Color(1.0f, 0.0f, 0.0f, 0.3f);
+        Color CINQUANTE = new Color(1.0f, 0.0f, 0.0f, 0.5f);
+        Color SOIXANTEDIX = new Color(1.0f, 0.0f, 0.0f, 0.7f);
+        Color QUATREVINGTDIX = new Color(1.0f, 0.0f, 0.0f, 0.9f);
+        Color CENT = new Color(1.0f, 0.0f, 0.0f, 1.0f);
+        final Color[] colors = {
+                VINGT,
+                TRENTE,
+                CINQUANTE,
+                SOIXANTEDIX,
+                QUATREVINGTDIX,
+                CENT,
+                CENT,
+                CENT,
+                CENT,
+                CENT,
+                QUATREVINGTDIX,
+                SOIXANTEDIX,
+                CINQUANTE,
+                TRENTE,
+                VINGT,
+        };
+        final LedLetter[] ledLetters = new LedLetter[colors.length];
 
 
         for (int i = 0; i < ledLetters.length; i++) {
-            final LedLetterModel model = new DefaultLedLetterModel(15, 32, 5, 5);
+            final LedLetterModel model = new DefaultLedLetterModel(LedLetterFont.LLF_15x32, 5, 5);
             ledLetters[i] = new LedLetter(model, LedDrawerFactory.getDefaultDrawer());
-            controllerController.addController(new LedLetterController(ledLetters[i], LedLetterFont.LLF_15x32));
+            LedLetterController controller = new LedLetterController(ledLetters[i]);
+            controller.setForegroundColor(colors[i % colors.length]);
+            controllerController.addController(controller);
             controllerController.setSpeed(150);
             f.add(ledLetters[i]);
         }
@@ -39,7 +65,9 @@ public class LedLetterPanelTest {
         f.setVisible(true);
 
 
-        controllerController.displayString("Hi my name is Led-Letter !");
+        controllerController.displayString("ABCDEFGH 12345678");
 
     }
+
+
 }

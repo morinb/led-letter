@@ -1,5 +1,7 @@
 package com.bnpparibas.grp.ledletter;
 
+import com.bnpparibas.grp.ledletter.fonts.LedLetterFont;
+
 /**
  * <p>The <code>LedLetterModel</code> interface specifies the methods the
  * <code>LedLetter</code> will use to interrogate a tabular data model.</p>
@@ -69,4 +71,6 @@ public interface LedLetterModel {
     boolean[][] getOldValues();
 
     boolean[][] getValues();
+
+    LedLetterFont getLedLetterFont();
 }

@@ -13,9 +13,9 @@ public class LedLetterController {
     private LedLetter ledLetter;
 
 
-    public LedLetterController(LedLetter ledLetter, LedLetterFont ledLetterFont) {
+    public LedLetterController(LedLetter ledLetter) {
         this.ledLetter = ledLetter;
-        switch (ledLetterFont) {
+        switch (ledLetter.getModel().getLedLetterFont()) {
             case LLF_5x7:
                 this.values = FontFormat5x7.values();
                 break;
@@ -48,7 +48,7 @@ public class LedLetterController {
     private boolean[][][] matrix = null;
 
     private void initializeFont(LetterDescription[] values) {
-        matrix = new boolean[255][values[0].height()][values[0].width()];
+        matrix = new boolean[256][values[0].height()][values[0].width()];
         for (LetterDescription ff : values) {
 
             String[] hexa = ff.getHexLetter().split(" ");
@@ -66,11 +66,11 @@ public class LedLetterController {
     }
 
     public void setForegroundColor(Color color) {
-        ledLetter.setForegroundColor(color);
+        ledLetter.setForeground(color);
     }
 
     public void setBackgroundColor(Color color) {
-        ledLetter.setBackgroundColor(color);
+        ledLetter.setBackground(color);
     }
 
     public void displayChar(int c) {
@@ -82,4 +82,11 @@ public class LedLetterController {
     }
 
 
+    public boolean isForegroundColorSet() {
+        return ledLetter.isForegroundColorSet();
+    }
+
+    public boolean isBackgroundColorSet() {
+        return ledLetter.isBackgroundColorSet();
+    }
 }
