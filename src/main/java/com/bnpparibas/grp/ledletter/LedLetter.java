@@ -80,7 +80,7 @@ public class LedLetter extends JComponent implements LedLetterModelListener {
                 int row = (i / (columnCount)) * ledHeight;
                 int col = (i % (columnCount)) * ledWidth;
                 leds[i].setBounds(col, row, ledWidth, ledHeight);
-                System.out.println(String.format("Led %d [%d, %d]", i, col, row));
+//                System.out.println(String.format("Led %d [%d, %d]", i, col, row));
                 this.add(leds[i]);
             }
 

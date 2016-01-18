@@ -55,4 +55,17 @@ public class DefaultLedLetterModel implements LedLetterModel {
             listener.ledLetterChanged(new LedLetterModelEvent(this));
         }
     }
+
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder();
+        for (int r = 0; r < getRowCount(); r++) {
+            for (int c = 0; c < getColumnCount(); c++) {
+                sb.append(getValueAt(r, c) ? "o" : ".");
+            }
+            sb.append("\n");
+        }
+
+        return sb.toString();
+    }
 }

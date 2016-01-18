@@ -18,7 +18,7 @@ public class LedTest {
     public static void main(String[] args) {
         JFrame f = new JFrame("LedTest");
 
-        final Led led = LedFactory.get(LedFactory.Type.SQUARE).getLed(20, 20);
+        final Led led = LedFactory.get(LedFactory.Type.SQUARE).getLed();
         
         f.add(led);
 

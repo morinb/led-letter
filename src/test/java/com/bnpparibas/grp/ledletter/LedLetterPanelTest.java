@@ -1,6 +1,8 @@
 package com.bnpparibas.grp.ledletter;
 
+import com.bnpparibas.grp.ledletter.factory.OvalLedFactory;
 import com.bnpparibas.grp.ledletter.factory.SquareLedFactory;
+import com.bnpparibas.grp.ledletter.fonts.LedLetterFont;
 
 import javax.swing.AbstractAction;
 import javax.swing.JFrame;
@@ -20,28 +22,14 @@ public class LedLetterPanelTest {
         JFrame f = new JFrame("LedTest");
         f.setLayout(new FlowLayout(FlowLayout.CENTER, 0, 0));
 
-        final LedLetter[] ledLetters = new LedLetter[10];
+        final LedLetterControllerController controllerController = new LedLetterControllerController();
+        final LedLetter[] ledLetters = new LedLetter[6];
 
 
         for (int i = 0; i < ledLetters.length; i++) {
             final LedLetterModel model = new DefaultLedLetterModel();
-            ledLetters[i] = new LedLetter(model, new SquareLedFactory());
-            final Timer timer = new Timer(2000, new AbstractAction("Led blink" + i) {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    SwingUtilities.invokeLater(new Runnable() {
-                        @Override
-                        public void run() {
-                            for (int r = 0; r < model.getRowCount(); r++) {
-                                for (int c = 0; c < model.getColumnCount(); c++) {
-                                    model.setValueAt(Math.random() > 0.5, r, c);
-                                }
-                            }
-                        }
-                    });
-                }
-            });
-            timer.start();
+            ledLetters[i] = new LedLetter(model, LedFactory.get(LedFactory.Type.SQUARE));
+            controllerController.addController(new LedLetterController(ledLetters[i], LedLetterFont.LLF_5x7));
             f.add(ledLetters[i]);
         }
 
@@ -51,10 +39,30 @@ public class LedLetterPanelTest {
         }
         double prefH = 100;
 
-        f.setPreferredSize(new Dimension((int) prefW, (int) prefH));
+        f.setPreferredSize(new Dimension((int) prefW+100, (int) prefH));
 
         f.pack();
         f.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         f.setVisible(true);
+
+        final boolean[] display = {true};
+        Timer t = new Timer(1000, new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                SwingUtilities.invokeLater(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (display[0]) {
+                            controllerController.displayString("Mourad mourad");
+
+                        } else {
+                            controllerController.displayString("             ");
+                        }
+                        display[0] = !display[0];
+                    }
+                });
+            }
+        });
+        t.start();
     }
 }

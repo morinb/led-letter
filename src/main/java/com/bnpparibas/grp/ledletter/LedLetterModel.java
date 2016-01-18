@@ -59,4 +59,9 @@ public interface LedLetterModel {
     void removeLedLetterModelListener(LedLetterModelListener l);
 
 
+    /**
+     * 
+     * @return the String representation of the model.
+     */
+    String toString();
 }

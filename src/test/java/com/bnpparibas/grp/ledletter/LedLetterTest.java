@@ -1,5 +1,7 @@
 package com.bnpparibas.grp.ledletter;
 
+import com.bnpparibas.grp.ledletter.fonts.LedLetterFont;
+
 import javax.swing.AbstractAction;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
@@ -37,13 +39,13 @@ public class LedLetterTest {
                 });
             }
         });
-        timer.start();
+//        timer.start();
 
         f.setSize(200, 200);
         f.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         f.setVisible(true);
 
-        LedLetterController controller = new LedLetterController(ledLetter, new Font("Tahoma", Font.PLAIN, 12));
+        LedLetterController controller = new LedLetterController(ledLetter, LedLetterFont.LLF_5x7);
         controller.displayChar('M');
     }
 
