@@ -7,9 +7,16 @@ import com.bnpparibas.grp.ledletter.leds.SquareLed;
  * @author morinb.
  */
 public class SquareLedFactory implements ILedFactory {
+    private final int ledSize;
+
+    public SquareLedFactory(int ledSize) {
+
+        this.ledSize = ledSize;
+    }
+
     @Override
     public Led getLed() {
-        return new SquareLed(4, 4);
+        return new SquareLed(ledSize, ledSize);
     }
 
 }

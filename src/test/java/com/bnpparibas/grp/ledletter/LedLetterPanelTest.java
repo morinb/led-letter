@@ -45,24 +45,7 @@ public class LedLetterPanelTest {
         f.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         f.setVisible(true);
 
-        final boolean[] display = {true};
-        Timer t = new Timer(1000, new AbstractAction() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                SwingUtilities.invokeLater(new Runnable() {
-                    @Override
-                    public void run() {
-                        if (display[0]) {
-                            controllerController.displayString("Mourad mourad");
 
-                        } else {
-                            controllerController.displayString("             ");
-                        }
-                        display[0] = !display[0];
-                    }
-                });
-            }
-        });
-        t.start();
+        controllerController.displayString("Coucou Mourad !");
     }
 }
