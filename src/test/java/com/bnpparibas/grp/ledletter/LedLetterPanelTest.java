@@ -24,7 +24,7 @@ public class LedLetterPanelTest {
 
 
         for (int i = 0; i < ledLetters.length; i++) {
-            final LedLetterModel model = new DefaultLedLetterModel(5, 7);
+            final LedLetterModel model = new DefaultLedLetterModel();
             ledLetters[i] = new LedLetter(model, new SquareLedFactory());
             final Timer timer = new Timer(2000, new AbstractAction("Led blink" + i) {
                 @Override

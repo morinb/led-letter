@@ -48,7 +48,7 @@ public class LedLetter extends JComponent implements LedLetterModelListener {
     }
 
     private LedLetterModel createDefaultLedLetterModel() {
-        return new DefaultLedLetterModel(1, 1);
+        return new DefaultLedLetterModel();
     }
 
     public void setModel(LedLetterModel model) {

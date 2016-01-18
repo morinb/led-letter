@@ -5,6 +5,7 @@ import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 import javax.swing.Timer;
 import javax.swing.WindowConstants;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 
 /**
@@ -16,7 +17,7 @@ public class LedLetterTest {
         JFrame f = new JFrame("LedTest");
 
 
-        final LedLetterModel model = new DefaultLedLetterModel(5, 7);
+        final LedLetterModel model = new DefaultLedLetterModel();
         final LedLetter ledLetter = new LedLetter(model);
 
         f.add(ledLetter);
@@ -41,6 +42,9 @@ public class LedLetterTest {
         f.setSize(200, 200);
         f.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         f.setVisible(true);
+
+        LedLetterController controller = new LedLetterController(ledLetter, new Font("Tahoma", Font.PLAIN, 12));
+        controller.displayChar('M');
     }
 
 }
