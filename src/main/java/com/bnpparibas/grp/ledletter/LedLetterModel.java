@@ -64,7 +64,7 @@ public interface LedLetterModel {
      */
     String toString();
 
-    void setValues(boolean[][] values);
+    void setValues(int c, boolean[][] values);
 
     void setOldValues(boolean[][] oldValues);
 
@@ -73,4 +73,8 @@ public interface LedLetterModel {
     boolean[][] getValues();
 
     LedLetterFont getLedLetterFont();
+
+    int getHorizontalGap();
+
+    int getVerticalGap();
 }

@@ -7,8 +7,10 @@ public interface LetterDescription {
     String getHexLetter();
 
     int getIntLetter();
-    
+
     int bytes();
+
     int width();
+
     int height();
 }

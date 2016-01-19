@@ -1,9 +1,7 @@
 package com.bnpparibas.grp.ledletter;
 
-import javax.swing.JComponent;
-import java.awt.Color;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
+import javax.swing.*;
+import java.awt.*;
 
 /**
  * @author morinb.

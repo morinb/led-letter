@@ -14,11 +14,19 @@ public class DefaultLedLetterModel implements LedLetterModel {
     private final LedLetterFont ledLetterFont;
     private int ledWidth;
     private int ledHeight;
+    private final int horizontalGap;
+    private final int verticalGap;
 
     public DefaultLedLetterModel(LedLetterFont ledLetterFont, int ledWidth, int ledHeight) {
+        this(ledLetterFont, ledWidth, ledHeight, 2 * ledWidth, 0);
+    }
+
+    public DefaultLedLetterModel(LedLetterFont ledLetterFont, int ledWidth, int ledHeight, int horizontalGap, int verticalGap) {
         this.ledLetterFont = ledLetterFont;
         this.ledWidth = ledWidth;
         this.ledHeight = ledHeight;
+        this.horizontalGap = horizontalGap;
+        this.verticalGap = verticalGap;
         int rowCount = ledLetterFont.rowCount();
         int columnCount = ledLetterFont.columnCount();
         currentValues = new boolean[rowCount][columnCount];
@@ -62,9 +70,9 @@ public class DefaultLedLetterModel implements LedLetterModel {
         listenerList.remove(LedLetterModelListener.class, l);
     }
 
-    protected void fireValueChanged() {
+    protected void fireValueChanged(int c) {
         for (LedLetterModelListener listener : listenerList.getListeners(LedLetterModelListener.class)) {
-            listener.ledLetterChanged(new LedLetterModelEvent(this));
+            listener.ledLetterChanged(new LedLetterModelEvent(c, this));
         }
     }
 
@@ -84,7 +92,7 @@ public class DefaultLedLetterModel implements LedLetterModel {
     }
 
     @Override
-    public void setValues(boolean[][] values) {
+    public void setValues(int c, boolean[][] values) {
         int rowCount = values.length;
         int columnCount = values[0].length;
         final boolean[][] oldValues = valuesCopy(currentValues);
@@ -94,7 +102,7 @@ public class DefaultLedLetterModel implements LedLetterModel {
             System.arraycopy(values[r], 0, currentValues[r], 0, columnCount);
         }
         this.setOldValues(oldValues);
-        fireValueChanged();
+        fireValueChanged(c);
     }
 
     private boolean[][] valuesCopy(boolean[][] ledStates) {
@@ -124,5 +132,15 @@ public class DefaultLedLetterModel implements LedLetterModel {
     @Override
     public LedLetterFont getLedLetterFont() {
         return ledLetterFont;
+    }
+
+    @Override
+    public int getHorizontalGap() {
+        return horizontalGap;
+    }
+
+    @Override
+    public int getVerticalGap() {
+        return verticalGap;
     }
 }

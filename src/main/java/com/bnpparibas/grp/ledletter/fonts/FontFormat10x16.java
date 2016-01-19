@@ -6,7 +6,6 @@ package com.bnpparibas.grp.ledletter.fonts;
 public enum FontFormat10x16 implements LetterDescription {
 
 
-
     FF10x16_32("00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00", 32) /* SPACE */,
     FF10x16_33("00 00 00 00 00 00 00 00 FF F3 FF F3 00 00 00 00 00 00 00 00", 33) /* ! */,
     FF10x16_34("CC 00 CC 00 F8 00 F0 00 00 00 CC 00 CC 00 F8 00 F0 00 00 00", 34) /* " */,

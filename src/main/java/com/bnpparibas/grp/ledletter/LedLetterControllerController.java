@@ -1,11 +1,11 @@
 package com.bnpparibas.grp.ledletter;
 
 import com.google.common.collect.Lists;
+import org.apache.commons.lang.StringUtils;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.util.Collection;
 import java.util.List;
 
 /**
@@ -84,9 +84,13 @@ public class LedLetterControllerController {
             scrollTimer.start();
         } else {
             // We have enough space, just display the message.
-            final int maxChar = Math.min(messageLength, controllers.size());
-            for (int i = 0; i < maxChar; i++) {
-                controllers.get(i).displayChar(message.charAt(i));
+            int spaceLeft = controllers.size() - messageLength;
+            int padding = spaceLeft / 2 - 1;
+            final String centeredMessage = StringUtils.rightPad(StringUtils.leftPad(message, message.length() + padding), controllers.size());
+            // Center the message by adding spaces to the left.
+
+            for (int i = 0; i < controllers.size(); i++) {
+                controllers.get(i).displayChar(centeredMessage.charAt(i));
             }
         }
     }
@@ -97,5 +101,9 @@ public class LedLetterControllerController {
             sb.append(' ');
         }
         return sb.toString();
+    }
+
+    public List<LedLetterController> getControllers() {
+        return controllers;
     }
 }

@@ -1,12 +1,15 @@
 package com.bnpparibas.grp.ledletter;
 
 import com.bnpparibas.grp.ledletter.drawer.ILedDrawer;
+import com.bnpparibas.grp.ledletter.effects.Effect;
 import com.bnpparibas.grp.ledletter.factory.LedDrawerFactory;
 import com.bnpparibas.grp.ledletter.fonts.LedLetterFont;
+import com.google.common.collect.Maps;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.util.Map;
 
 /**
  * @author morinb.
@@ -17,6 +20,8 @@ public class LedLetter extends JComponent implements LedLetterModelListener {
     private ILedDrawer ledDrawer;
     private boolean foregroundColorSet = false;
     private boolean backgroundColorSet = false;
+    private int currentChar;
+    private Effect effect;
 
 
     public LedLetter() {
@@ -43,6 +48,10 @@ public class LedLetter extends JComponent implements LedLetterModelListener {
         setLedDrawer(ledDrawer);
         setModel(model);
         setLayout(null);
+    }
+
+    public void setEffect(Effect effect) {
+        this.effect = effect;
     }
 
     private ILedDrawer createDefaultLedDrawer() {
@@ -85,12 +94,15 @@ public class LedLetter extends JComponent implements LedLetterModelListener {
             final int ledWidth = model.getLedWidth();
             final int ledHeight = model.getLedHeight();
 
-            setPreferredSize(new Dimension(ledWidth * columnCount, ledHeight * rowCount));
+            setPreferredSize(new Dimension(ledWidth * columnCount + 7, ledHeight * rowCount));
 
-            ledLetterChanged(new LedLetterModelEvent(model));
+            ledLetterChanged(new LedLetterModelEvent(' ', model));
             firePropertyChange(PROPERTY_CHANGE_MODEL, old, model);
         }
     }
+
+    private Map<Integer, BufferedImage> imageMap = Maps.newHashMap();
+
 
     @Override
     protected void paintComponent(Graphics g) {
@@ -99,23 +111,35 @@ public class LedLetter extends JComponent implements LedLetterModelListener {
         final int ledWidth = model.getLedWidth();
         final int ledHeight = model.getLedHeight();
 
-        final int imageWidth = ledWidth * model.getColumnCount();
-        final int imageHeight = ledHeight * model.getRowCount();
-        final BufferedImage bi = new BufferedImage(imageWidth, imageHeight, BufferedImage.TYPE_3BYTE_BGR);
-        final Graphics2D g2 = bi.createGraphics();
-        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+        final int imageWidth = ledWidth * model.getColumnCount() + 1 + model.getHorizontalGap();
+        final int imageHeight = ledHeight * model.getRowCount() + 1 + model.getVerticalGap();
 
-        for (int row = 0; row < model.getRowCount(); row++) {
-            for (int col = 0; col < model.getColumnCount(); col++) {
-                int x = ledWidth * col;
-                int y = ledHeight * row;
-                if (model.getOldValues()[row][col] != model.getValues()[row][col]) {
-                    g2.setPaint(model.getValues()[row][col] ? getForeground() : getBackground());
-                    ledDrawer.drawLed(g2, x - 1, y - 1, ledWidth + 1, ledHeight + 1);
+        BufferedImage bi;
+        if (!imageMap.containsKey(currentChar)) {
+            bi = new BufferedImage(imageWidth, imageHeight, BufferedImage.TYPE_3BYTE_BGR);
+            final Graphics2D g2 = bi.createGraphics();
+            g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+
+            for (int row = 0; row < model.getRowCount(); row++) {
+                for (int col = 0; col < model.getColumnCount(); col++) {
+                    int x = ledWidth * col + model.getHorizontalGap();
+                    int y = ledHeight * row + model.getVerticalGap();
+                    if (model.getOldValues()[row][col] != model.getValues()[row][col]) {
+                        g2.setPaint(model.getValues()[row][col] ? getForeground() : getBackground());
+                        ledDrawer.drawLed(g2, x, y, ledWidth - 1, ledHeight - 1);
+                    }
                 }
             }
+
+            if (effect != null) {
+                bi = effect.applyEffectChainOn(bi);
+            }
+
+            imageMap.put(currentChar, bi);
+            g2.dispose();
+        } else {
+            bi = imageMap.get(currentChar);
         }
-        g2.dispose();
         g.drawImage(bi, 0, 0, imageWidth, imageHeight, null);
     }
 
@@ -126,7 +150,7 @@ public class LedLetter extends JComponent implements LedLetterModelListener {
 
     @Override
     public void ledLetterChanged(LedLetterModelEvent e) {
-
+        this.currentChar = e.getC();
         repaint();
     }
 

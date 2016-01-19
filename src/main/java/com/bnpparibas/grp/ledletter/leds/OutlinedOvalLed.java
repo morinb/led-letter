@@ -2,8 +2,7 @@ package com.bnpparibas.grp.ledletter.leds;
 
 import com.bnpparibas.grp.ledletter.Led;
 
-import java.awt.Color;
-import java.awt.Graphics2D;
+import java.awt.*;
 
 /**
  * @author morinb.

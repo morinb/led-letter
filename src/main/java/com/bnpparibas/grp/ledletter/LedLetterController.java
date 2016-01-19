@@ -77,7 +77,7 @@ public class LedLetterController {
         if (matrix == null) {
             return;
         }
-        ledLetter.getModel().setValues(matrix[c]);
+        ledLetter.getModel().setValues(c, matrix[c]);
 
     }
 
@@ -88,5 +88,9 @@ public class LedLetterController {
 
     public boolean isBackgroundColorSet() {
         return ledLetter.isBackgroundColorSet();
+    }
+
+    public LedLetter getLedLetter() {
+        return ledLetter;
     }
 }
