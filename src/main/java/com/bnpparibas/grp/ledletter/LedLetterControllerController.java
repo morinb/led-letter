@@ -3,8 +3,10 @@ package com.bnpparibas.grp.ledletter;
 import com.google.common.collect.Lists;
 import org.apache.commons.lang.StringUtils;
 
-import javax.swing.*;
-import java.awt.*;
+import javax.swing.AbstractAction;
+import javax.swing.SwingUtilities;
+import javax.swing.Timer;
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.util.List;
 

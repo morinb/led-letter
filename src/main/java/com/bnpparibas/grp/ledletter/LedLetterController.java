@@ -1,8 +1,16 @@
 package com.bnpparibas.grp.ledletter;
 
-import com.bnpparibas.grp.ledletter.fonts.*;
+import com.bnpparibas.grp.ledletter.fonts.FontFormat10x14;
+import com.bnpparibas.grp.ledletter.fonts.FontFormat10x16;
+import com.bnpparibas.grp.ledletter.fonts.FontFormat15x32;
+import com.bnpparibas.grp.ledletter.fonts.FontFormat5x7;
+import com.bnpparibas.grp.ledletter.fonts.FontFormat7x7;
+import com.bnpparibas.grp.ledletter.fonts.FontFormat7x9;
+import com.bnpparibas.grp.ledletter.fonts.FontFormat8x14;
+import com.bnpparibas.grp.ledletter.fonts.FontFormat8x16;
+import com.bnpparibas.grp.ledletter.fonts.LetterDescription;
 
-import java.awt.*;
+import java.awt.Color;
 import java.util.BitSet;
 
 /**

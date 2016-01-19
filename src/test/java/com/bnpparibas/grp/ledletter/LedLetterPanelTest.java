@@ -1,12 +1,14 @@
 package com.bnpparibas.grp.ledletter;
 
-import com.bnpparibas.grp.ledletter.effects.Blur;
 import com.bnpparibas.grp.ledletter.effects.Effect;
+import com.bnpparibas.grp.ledletter.effects.Sharpen;
 import com.bnpparibas.grp.ledletter.factory.LedDrawerFactory;
 import com.bnpparibas.grp.ledletter.fonts.LedLetterFont;
 
-import javax.swing.*;
-import java.awt.*;
+import javax.swing.JFrame;
+import javax.swing.WindowConstants;
+import java.awt.BorderLayout;
+import java.awt.Color;
 
 /**
  * @author morinb.
@@ -27,42 +29,43 @@ public class LedLetterPanelTest {
         Color CENT = new Color(1.0f, 0.0f, 0.0f, 1.0f);
         final Color[] colors = {
                 VINGT,
+                VINGT,
+                TRENTE,
                 TRENTE,
                 CINQUANTE,
+                CINQUANTE,
+                SOIXANTEDIX,
                 SOIXANTEDIX,
                 QUATREVINGTDIX,
+                QUATREVINGTDIX,
+                CENT,
+                CENT,
                 CENT,
                 CENT,
                 CENT,
                 CENT,
                 CENT,
                 QUATREVINGTDIX,
+                QUATREVINGTDIX,
+                SOIXANTEDIX,
                 SOIXANTEDIX,
                 CINQUANTE,
+                CINQUANTE,
+                TRENTE,
                 TRENTE,
                 VINGT,
+                VINGT,
         };
-        final LedLetter[] ledLetters = new LedLetter[40];
+        final LedLetter[] ledLetters = new LedLetter[27];
 
-        final Effect[] effects = {
-                new Blur(),
-                /*new ContourEffect(),
-                new GaussianBlur(),
-                new Invert(),
-                new Sharpen(),*/
-                // new GrayscaleEffect(),
-                /*new KernelFilter(new Kernel(3, 3, new float[]{
-                        -1f, -1f, -1f,
-                        -1f, 5f, -1f,
-                        -1f, -1f, -1f}))*/
-        };
+        Effect e = new Sharpen();
 
         for (int i = 0; i < ledLetters.length; i++) {
-            final LedLetterModel model = new DefaultLedLetterModel(LedLetterFont.LLF_7x9, 4, 4);
-            ledLetters[i] = new LedLetter(model, LedDrawerFactory.getOvalLedDrawer());
-            //ledLetters[i].setEffect(effects[i % effects.length]);
+            final LedLetterModel model = new DefaultLedLetterModel(LedLetterFont.LLF_15x32, 3, 3);
+            ledLetters[i] = new LedLetter(model, LedDrawerFactory.getSquareLedDrawer());
+            ledLetters[i].setEffect(e);
             LedLetterController controller = new LedLetterController(ledLetters[i]);
-            //controller.setForegroundColor(colors[i % colors.length]);
+            controller.setForegroundColor(colors[i % colors.length]);
             controllerController.addController(controller);
         }
         controllerController.setSpeed(100);

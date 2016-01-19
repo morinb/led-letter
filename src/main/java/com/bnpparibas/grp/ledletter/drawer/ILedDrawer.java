@@ -1,6 +1,6 @@
 package com.bnpparibas.grp.ledletter.drawer;
 
-import java.awt.*;
+import java.awt.Graphics;
 
 /**
  * Created by Baptiste on 18/01/2016.

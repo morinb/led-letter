@@ -2,8 +2,9 @@ package com.bnpparibas.grp.ledletter;
 
 import com.bnpparibas.grp.ledletter.fonts.LedLetterFont;
 
-import javax.swing.*;
-import java.awt.*;
+import javax.swing.JFrame;
+import javax.swing.WindowConstants;
+import java.awt.Color;
 
 /**
  * @author morinb.

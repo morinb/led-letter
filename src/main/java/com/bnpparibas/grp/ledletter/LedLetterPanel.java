@@ -1,7 +1,7 @@
 package com.bnpparibas.grp.ledletter;
 
-import javax.swing.*;
-import java.awt.*;
+import javax.swing.JPanel;
+import java.awt.FlowLayout;
 
 /**
  * Created by Baptiste on 18/01/2016.

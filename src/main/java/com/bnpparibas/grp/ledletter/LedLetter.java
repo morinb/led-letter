@@ -6,8 +6,12 @@ import com.bnpparibas.grp.ledletter.factory.LedDrawerFactory;
 import com.bnpparibas.grp.ledletter.fonts.LedLetterFont;
 import com.google.common.collect.Maps;
 
-import javax.swing.*;
-import java.awt.*;
+import javax.swing.JComponent;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 import java.util.Map;
 
@@ -94,7 +98,7 @@ public class LedLetter extends JComponent implements LedLetterModelListener {
             final int ledWidth = model.getLedWidth();
             final int ledHeight = model.getLedHeight();
 
-            setPreferredSize(new Dimension(ledWidth * columnCount + 7, ledHeight * rowCount));
+            setPreferredSize(new Dimension(ledWidth * columnCount + 1 + model.getHorizontalGap(), ledHeight * rowCount + 1 + model.getVerticalGap()));
 
             ledLetterChanged(new LedLetterModelEvent(' ', model));
             firePropertyChange(PROPERTY_CHANGE_MODEL, old, model);
