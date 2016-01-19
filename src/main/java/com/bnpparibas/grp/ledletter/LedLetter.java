@@ -1,18 +1,19 @@
 package com.bnpparibas.grp.ledletter;
 
 import com.bnpparibas.grp.ledletter.drawer.ILedDrawer;
-import com.bnpparibas.grp.ledletter.effects.Effect;
 import com.bnpparibas.grp.ledletter.factory.LedDrawerFactory;
 import com.bnpparibas.grp.ledletter.fonts.LedLetterFont;
 import com.google.common.collect.Maps;
 
 import javax.swing.JComponent;
+import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
+import java.awt.image.BufferedImageOp;
 import java.util.Map;
 
 /**
@@ -25,7 +26,7 @@ public class LedLetter extends JComponent implements LedLetterModelListener {
     private boolean foregroundColorSet = false;
     private boolean backgroundColorSet = false;
     private int currentChar;
-    private Effect effect;
+    private BufferedImageOp[] effects;
 
 
     public LedLetter() {
@@ -52,10 +53,11 @@ public class LedLetter extends JComponent implements LedLetterModelListener {
         setLedDrawer(ledDrawer);
         setModel(model);
         setLayout(null);
+        super.setBackground(Color.BLUE);
     }
 
-    public void setEffect(Effect effect) {
-        this.effect = effect;
+    public void setEffects(BufferedImageOp[] effects) {
+        this.effects = effects;
     }
 
     private ILedDrawer createDefaultLedDrawer() {
@@ -118,33 +120,50 @@ public class LedLetter extends JComponent implements LedLetterModelListener {
         final int imageWidth = ledWidth * model.getColumnCount() + 1 + model.getHorizontalGap();
         final int imageHeight = ledHeight * model.getRowCount() + 1 + model.getVerticalGap();
 
-        BufferedImage bi;
-        if (!imageMap.containsKey(currentChar)) {
-            bi = new BufferedImage(imageWidth, imageHeight, BufferedImage.TYPE_3BYTE_BGR);
-            final Graphics2D g2 = bi.createGraphics();
-            g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-
-            for (int row = 0; row < model.getRowCount(); row++) {
-                for (int col = 0; col < model.getColumnCount(); col++) {
-                    int x = ledWidth * col + model.getHorizontalGap();
-                    int y = ledHeight * row + model.getVerticalGap();
-                    if (model.getOldValues()[row][col] != model.getValues()[row][col]) {
-                        g2.setPaint(model.getValues()[row][col] ? getForeground() : getBackground());
-                        ledDrawer.drawLed(g2, x, y, ledWidth - 1, ledHeight - 1);
+        int myCurrentChar = currentChar;
+        if (!imageMap.containsKey(myCurrentChar)) {
+            BufferedImage tempForeground = new BufferedImage(imageWidth, imageHeight, BufferedImage.TYPE_INT_ARGB);
+            {
+                final Graphics2D g2 = tempForeground.createGraphics();
+                g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+                for (int row = 0; row < model.getRowCount(); row++) {
+                    for (int col = 0; col < model.getColumnCount(); col++) {
+                        int x = ledWidth * col  /*+ model.getHorizontalGap()*/;
+                        int y = ledHeight * row /*+ model.getVerticalGap()  */;
+                        if (model.getValues()[row][col]) {
+                            g2.setPaint(getForeground());
+                            ledDrawer.drawLed(g2, x, y, ledWidth - 1, ledHeight - 1);
+                        } else {
+                            g2.setPaint(new Color(255, 255, 255, 255));
+                        }
                     }
+                }
+                g2.dispose();
+            }
+
+            if (effects != null) {
+                for (BufferedImageOp op : effects) {
+                    System.out.println("Applying " + op.toString());
+                    tempForeground = op.filter(tempForeground, null);
                 }
             }
 
-            if (effect != null) {
-                bi = effect.applyEffectChainOn(bi);
-            }
 
-            imageMap.put(currentChar, bi);
+            BufferedImage finalBi = new BufferedImage(imageWidth, imageHeight, BufferedImage.TYPE_INT_ARGB);
+            Graphics2D g2 = finalBi.createGraphics();
+            g2.setPaint(getBackground());
+            g2.fillRect(0, 0, imageWidth, imageHeight);
+            g2.setComposite(AlphaComposite.SrcAtop);
+
+            g2.drawImage(tempForeground, 0, 0, imageWidth, imageHeight, null);
+            imageMap.put(myCurrentChar, finalBi);
             g2.dispose();
-        } else {
-            bi = imageMap.get(currentChar);
         }
-        g.drawImage(bi, 0, 0, imageWidth, imageHeight, null);
+
+        final BufferedImage img = imageMap.get(myCurrentChar);
+        g.drawImage(img, 0, 0, imageWidth, imageHeight, null);
+
+
     }
 
     public LedLetterModel getModel() {

@@ -17,8 +17,13 @@ public class LedLetterControllerController {
     private List<LedLetterController> controllers;
     private Timer scrollTimer;
     private int speed = 100;
-    private Color backgroundColor;
-    private Color foregroundColor;
+    private Color backgroundColor = Color.BLACK;
+    private Color foregroundColor = Color.RED;
+    private boolean blink = true;
+    private boolean blinking = false;
+    private int blinkCount = 0;
+    private int displayFrameNumber = 10;
+    private int hideFrameNumber = 10;
 
     public LedLetterControllerController() {
         controllers = Lists.newArrayList();
@@ -59,6 +64,23 @@ public class LedLetterControllerController {
         }
     }
 
+    public void setBlinking(boolean blinking) {
+        this.blinking = blinking;
+    }
+
+    public boolean isBlinking() {
+        return blinking;
+    }
+
+
+    public void setBlinkEveryXFrames(int blinkEvery) {
+        setBlinkEveryXFrames(blinkEvery, blinkEvery / 3);
+    }
+
+    public void setBlinkEveryXFrames(int displayDuring, int hideDuring) {
+        this.displayFrameNumber = displayDuring;
+        this.hideFrameNumber = hideDuring;
+    }
 
     public void displayString(final String message) {
         final int messageLength = message.length();
@@ -78,11 +100,29 @@ public class LedLetterControllerController {
                             // Get controllers.size() chars from message.
                             String displayedMessage = paddedMessage.substring(index[0], index[0] + controllers.size());
                             index[0] = (index[0] + 1) % (message.length() + spaces.length());
-                            displayString(displayedMessage);
+                            if (blinking && blink) {
+                                displayString(spaces(displayedMessage.length()));
+                            } else {
+                                displayString(displayedMessage);
+                            }
+                            if (blink) {
+                                if (blinkCount > hideFrameNumber) {
+                                    blink = !blink;
+                                    blinkCount = 0;
+                                }
+                            } else {
+                                if (blinkCount > displayFrameNumber) {
+                                    blink = !blink;
+                                    blinkCount = 0;
+                                }
+                            }
+                            blinkCount++;
                         }
                     });
                 }
-            });
+            }
+
+            );
             scrollTimer.start();
         } else {
             // We have enough space, just display the message.

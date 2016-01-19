@@ -89,7 +89,6 @@ public class LedLetterController {
 
     }
 
-
     public boolean isForegroundColorSet() {
         return ledLetter.isForegroundColorSet();
     }
