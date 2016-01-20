@@ -59,11 +59,11 @@ public class LedLetterPanelTest {
 
 
         BufferedImageOp[] e = new BufferedImageOp[]{
-
+              //  new RippleFilter()
         };
 
         for (int i = 0; i < ledLetters.length; i++) {
-            final LedLetterModel model = new DefaultLedLetterModel(LedLetterFont.LLF_5x7, 3, 3, 1, 1);
+            final LedLetterModel model = new DefaultLedLetterModel(LedLetterFont.LLF_10x14, 3, 3, 1, 1);
             ledLetters[i] = new LedLetter(model, LedDrawerFactory.getSquareLedDrawer());
             ledLetters[i].setEffects(e);
             LedLetterController controller = new LedLetterController(ledLetters[i]);
@@ -78,12 +78,7 @@ public class LedLetterPanelTest {
         f.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         f.setVisible(true);
 
-
         controllerController.displayString("/!\\ Warning /!\\ Application will restart in 5 minutes.");
-        controllerController.setBlinking(true);
-        controllerController.setBlinkEveryXFrames(10);
-
-
     }
 
 

@@ -27,6 +27,7 @@ public class LedLetterControllerController {
 
     public LedLetterControllerController() {
         controllers = Lists.newArrayList();
+        setBlinkEveryXFrames(10);
     }
 
     public void addController(LedLetterController controller) {
@@ -38,6 +39,8 @@ public class LedLetterControllerController {
         }
         controllers.add(controller);
     }
+
+    
 
     public Integer getSpeed() {
         return speed;
