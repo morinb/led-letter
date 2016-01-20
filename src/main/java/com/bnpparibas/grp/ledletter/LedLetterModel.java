@@ -25,54 +25,54 @@ import java.awt.Dimension;
  * @author morinb.
  */
 public interface LedLetterModel {
-    /**
-     * @return the number of led per rows.
-     */
-    int getRowCount();
+   /**
+    * @return the number of led per rows.
+    */
+   int getRowCount();
 
-    /**
-     * @return the number of led per columns.
-     */
-    int getColumnCount();
+   /**
+    * @return the number of led per columns.
+    */
+   int getColumnCount();
 
-    /**
-     * @return the led dimension.
-     */
-    Dimension getLedDimension();
+   /**
+    * @return the led dimension.
+    */
+   Dimension getLedDimension();
 
-    /**
-     * Adds a listener to the list that is notified each time a change
-     * to the data model occurs.
-     *
-     * @param l the LedLetterModelListener
-     */
-    void addLedLetterModelListener(LedLetterModelListener l);
+   /**
+    * Adds a listener to the list that is notified each time a change
+    * to the data model occurs.
+    *
+    * @param l the LedLetterModelListener
+    */
+   void addLedLetterModelListener(LedLetterModelListener l);
 
-    /**
-     * Removes a listener from the list that is notified each time a
-     * change to the data model occurs.
-     *
-     * @param l the LedLetterModelListener
-     */
-    void removeLedLetterModelListener(LedLetterModelListener l);
+   /**
+    * Removes a listener from the list that is notified each time a
+    * change to the data model occurs.
+    *
+    * @param l the LedLetterModelListener
+    */
+   void removeLedLetterModelListener(LedLetterModelListener l);
 
 
-    /**
-     * @return the String representation of the model.
-     */
-    String toString();
+   /**
+    * @return the String representation of the model.
+    */
+   String toString();
 
-    boolean[][] getValues(char c);
+   boolean[][] getValues(char c);
 
-    LedLetterFont getLedLetterFont();
+   LedLetterFont getLedLetterFont();
 
-    Dimension getGap();
+   Dimension getGap();
 
-    Color getLetterColor();
+   Color getLetterColor();
 
-    Color getLetterBackgroundColor();
+   Color getLetterBackgroundColor();
 
-    boolean isBlinking();
+   boolean isBlinking();
 
-    ILedDrawer getLedDrawer();
+   ILedDrawer getLedDrawer();
 }

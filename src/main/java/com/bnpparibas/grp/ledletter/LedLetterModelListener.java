@@ -9,5 +9,5 @@ import java.util.EventListener;
  * @author morinb.
  */
 public interface LedLetterModelListener extends EventListener {
-    void ledLetterChanged(LedLetterModelEvent e);
+   void ledLetterChanged(LedLetterModelEvent e);
 }

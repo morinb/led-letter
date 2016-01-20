@@ -4,19 +4,19 @@ package com.bnpparibas.grp.ledletter.fonts;
  * Adaptation of jfxtras MatrixPanel
  */
 public interface LetterDescription {
-    String getHexLetter();
+   String getHexLetter();
 
-    int getIntLetter();
+   int getIntLetter();
 
-    int bytes();
+   int bytes();
 
-    int width();
+   int width();
 
-    int height();
+   int height();
 
-    void invalidate();
+   void invalidate();
 
-    void initialize();
+   void initialize();
 
-    boolean[][] getValues();
+   boolean[][] getValues();
 }

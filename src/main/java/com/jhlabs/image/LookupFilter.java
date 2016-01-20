@@ -21,57 +21,57 @@ package com.jhlabs.image;
  */
 public class LookupFilter extends PointFilter {
 
-    private Colormap colormap = new Gradient();
+   private Colormap colormap = new Gradient();
 
-    /**
-     * Construct a LookupFilter.
-     */
-    public LookupFilter() {
-        canFilterIndexColorModel = true;
-    }
+   /**
+    * Construct a LookupFilter.
+    */
+   public LookupFilter() {
+      canFilterIndexColorModel = true;
+   }
 
-    /**
-     * Construct a LookupFilter.
-     *
-     * @param colormap the color map
-     */
-    public LookupFilter(Colormap colormap) {
-        canFilterIndexColorModel = true;
-        this.colormap = colormap;
-    }
+   /**
+    * Construct a LookupFilter.
+    *
+    * @param colormap the color map
+    */
+   public LookupFilter(Colormap colormap) {
+      canFilterIndexColorModel = true;
+      this.colormap = colormap;
+   }
 
-    /**
-     * Set the colormap to be used for the filter.
-     *
-     * @param colormap the colormap
-     * @see #getColormap
-     */
-    public void setColormap(Colormap colormap) {
-        this.colormap = colormap;
-    }
+   /**
+    * Set the colormap to be used for the filter.
+    *
+    * @param colormap the colormap
+    * @see #getColormap
+    */
+   public void setColormap(Colormap colormap) {
+      this.colormap = colormap;
+   }
 
-    /**
-     * Get the colormap to be used for the filter.
-     *
-     * @return the colormap
-     * @see #setColormap
-     */
-    public Colormap getColormap() {
-        return colormap;
-    }
+   /**
+    * Get the colormap to be used for the filter.
+    *
+    * @return the colormap
+    * @see #setColormap
+    */
+   public Colormap getColormap() {
+      return colormap;
+   }
 
-    public int filterRGB(int x, int y, int rgb) {
+   public int filterRGB(int x, int y, int rgb) {
 //		int a = rgb & 0xff000000;
-        int r = (rgb >> 16) & 0xff;
-        int g = (rgb >> 8) & 0xff;
-        int b = rgb & 0xff;
-        rgb = (r + g + b) / 3;
-        return colormap.getColor(rgb / 255.0f);
-    }
+      int r = (rgb >> 16) & 0xff;
+      int g = (rgb >> 8) & 0xff;
+      int b = rgb & 0xff;
+      rgb = (r + g + b) / 3;
+      return colormap.getColor(rgb / 255.0f);
+   }
 
-    public String toString() {
-        return "Colors/Lookup...";
-    }
+   public String toString() {
+      return "Colors/Lookup...";
+   }
 
 }
 

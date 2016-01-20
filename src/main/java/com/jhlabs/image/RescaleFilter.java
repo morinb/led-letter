@@ -21,45 +21,45 @@ package com.jhlabs.image;
  */
 public class RescaleFilter extends TransferFilter {
 
-    private float scale = 1.0f;
+   private float scale = 1.0f;
 
-    public RescaleFilter() {
-    }
+   public RescaleFilter() {
+   }
 
-    public RescaleFilter(float scale) {
-        this.scale = scale;
-    }
+   public RescaleFilter(float scale) {
+      this.scale = scale;
+   }
 
-    protected float transferFunction(float v) {
-        return v * scale;
-    }
+   protected float transferFunction(float v) {
+      return v * scale;
+   }
 
-    /**
-     * Specifies the scale factor.
-     *
-     * @param scale the scale factor.
-     * @min-value 1
-     * @max-value 5+
-     * @see #getScale
-     */
-    public void setScale(float scale) {
-        this.scale = scale;
-        initialized = false;
-    }
+   /**
+    * Specifies the scale factor.
+    *
+    * @param scale the scale factor.
+    * @min-value 1
+    * @max-value 5+
+    * @see #getScale
+    */
+   public void setScale(float scale) {
+      this.scale = scale;
+      initialized = false;
+   }
 
-    /**
-     * Returns the scale factor.
-     *
-     * @return the scale factor.
-     * @see #setScale
-     */
-    public float getScale() {
-        return scale;
-    }
+   /**
+    * Returns the scale factor.
+    *
+    * @return the scale factor.
+    * @see #setScale
+    */
+   public float getScale() {
+      return scale;
+   }
 
-    public String toString() {
-        return "Colors/Rescale...";
-    }
+   public String toString() {
+      return "Colors/Rescale...";
+   }
 
 }
 
