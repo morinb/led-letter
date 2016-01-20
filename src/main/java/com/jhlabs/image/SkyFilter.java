@@ -418,7 +418,7 @@ if (y == 100)System.out.println(fg+" "+gf+gradient);
 */
 // ...
 /*
-		r += (cloudColor-r) * cloudAlpha;
+        r += (cloudColor-r) * cloudAlpha;
 		g += (cloudColor-g) * cloudAlpha;
 		b += (cloudColor-b) * cloudAlpha;
 */

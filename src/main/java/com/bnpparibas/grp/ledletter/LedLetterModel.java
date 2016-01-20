@@ -1,6 +1,9 @@
 package com.bnpparibas.grp.ledletter;
 
+import com.bnpparibas.grp.ledletter.drawer.ILedDrawer;
 import com.bnpparibas.grp.ledletter.fonts.LedLetterFont;
+
+import java.awt.Color;
 
 /**
  * <p>The <code>LedLetterModel</code> interface specifies the methods the
@@ -19,7 +22,6 @@ import com.bnpparibas.grp.ledletter.fonts.LedLetterFont;
  * </p>
  *
  * @author morinb.
- * @see LedLetter
  */
 public interface LedLetterModel {
     /**
@@ -64,17 +66,19 @@ public interface LedLetterModel {
      */
     String toString();
 
-    void setValues(int c, boolean[][] values);
-
-    void setOldValues(boolean[][] oldValues);
-
-    boolean[][] getOldValues();
-
-    boolean[][] getValues();
+    boolean[][] getValues(char c);
 
     LedLetterFont getLedLetterFont();
 
     int getHorizontalGap();
 
     int getVerticalGap();
+
+    Color getLetterColor();
+
+    Color getLetterBackgroundColor();
+
+    boolean isBlinking();
+
+    ILedDrawer getLedDrawer();
 }

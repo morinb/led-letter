@@ -237,7 +237,7 @@ public class WarpGrid {
                 ImageMath.resample(inPixels, intermediate, cols, y * cols, 1, scale);
                 offset += gridCols;
             }
-		/* create table of y-intercepts for intermediate mesh's hor splines */
+        /* create table of y-intercepts for intermediate mesh's hor splines */
 
             splines = new WarpGrid(gridRows, cols, 1, 1);
 

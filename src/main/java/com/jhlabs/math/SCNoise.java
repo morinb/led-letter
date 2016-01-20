@@ -47,7 +47,7 @@ public class SCNoise implements Function1D, Function2D, Function3D {
         int m = 2;
         for (i = -m; i <= m; i++) {
             for (j = -m; j <= m; j++) {
-			/* Compute voxel hash code. */
+            /* Compute voxel hash code. */
                 h = perm[(ix + i + perm[(iy + j) & TABMASK]) & TABMASK];
 
                 for (n = NIMPULSES; n > 0; n--, h = (h + 1) & TABMASK) {

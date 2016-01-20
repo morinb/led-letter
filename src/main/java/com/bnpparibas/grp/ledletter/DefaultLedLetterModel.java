@@ -1,32 +1,48 @@
 package com.bnpparibas.grp.ledletter;
 
+import com.bnpparibas.grp.ledletter.drawer.ILedDrawer;
+import com.bnpparibas.grp.ledletter.factory.LedDrawerFactory;
 import com.bnpparibas.grp.ledletter.fonts.LedLetterFont;
 
 import javax.swing.event.EventListenerList;
+import java.awt.Color;
 
 /**
  * @author morinb.
  */
 public class DefaultLedLetterModel implements LedLetterModel {
+    private final LedLetterFont ledLetterFont;
+    private final int horizontalGap;
+    private final int verticalGap;
     private boolean[][] currentValues;
     private boolean[][] oldValues;
     private EventListenerList listenerList = new EventListenerList();
-    private final LedLetterFont ledLetterFont;
     private int ledWidth;
     private int ledHeight;
-    private final int horizontalGap;
-    private final int verticalGap;
+    private Color letterColor;
+    private Color letterBackgroundColor;
+    private boolean blinking;
+    private ILedDrawer ledDrawer;
 
     public DefaultLedLetterModel(LedLetterFont ledLetterFont, int ledWidth, int ledHeight) {
         this(ledLetterFont, ledWidth, ledHeight, 2 * ledWidth, 0);
     }
 
     public DefaultLedLetterModel(LedLetterFont ledLetterFont, int ledWidth, int ledHeight, int horizontalGap, int verticalGap) {
+        this(ledLetterFont, ledWidth, ledHeight, horizontalGap, verticalGap, Color.RED, Color.BLACK, false, LedDrawerFactory.getDefaultDrawer());
+    }
+
+    public DefaultLedLetterModel(LedLetterFont ledLetterFont, int ledWidth, int ledHeight, int horizontalGap, int verticalGap, Color letterColor, Color letterBackgroundColor, boolean blinking, ILedDrawer drawer) {
         this.ledLetterFont = ledLetterFont;
         this.ledWidth = ledWidth;
         this.ledHeight = ledHeight;
         this.horizontalGap = horizontalGap;
         this.verticalGap = verticalGap;
+        this.letterColor = letterColor;
+        this.letterBackgroundColor = letterBackgroundColor;
+        this.blinking = blinking;
+        this.ledDrawer = drawer;
+
         int rowCount = ledLetterFont.rowCount();
         int columnCount = ledLetterFont.columnCount();
         currentValues = new boolean[rowCount][columnCount];
@@ -55,9 +71,17 @@ public class DefaultLedLetterModel implements LedLetterModel {
         return ledWidth;
     }
 
+    public void setLedWidth(int ledWidth) {
+        this.ledWidth = ledWidth;
+    }
+
     @Override
     public int getLedHeight() {
         return ledHeight;
+    }
+
+    public void setLedHeight(int ledHeight) {
+        this.ledHeight = ledHeight;
     }
 
     @Override
@@ -77,59 +101,6 @@ public class DefaultLedLetterModel implements LedLetterModel {
     }
 
     @Override
-    public void setOldValues(boolean[][] oldValues) {
-        this.oldValues = oldValues;
-    }
-
-    @Override
-    public boolean[][] getOldValues() {
-        return this.oldValues;
-    }
-
-    @Override
-    public boolean[][] getValues() {
-        return this.currentValues;
-    }
-
-    @Override
-    public void setValues(int c, boolean[][] values) {
-        int rowCount = values.length;
-        int columnCount = values[0].length;
-        final boolean[][] oldValues = valuesCopy(currentValues);
-        currentValues = new boolean[rowCount][columnCount];
-        for (int r = 0; r < rowCount; r++) {
-            System.arraycopy(currentValues[r], 0, oldValues[r], 0, columnCount);
-            System.arraycopy(values[r], 0, currentValues[r], 0, columnCount);
-        }
-        this.setOldValues(oldValues);
-        fireValueChanged(c);
-    }
-
-    private boolean[][] valuesCopy(boolean[][] ledStates) {
-        final int rowCount = ledStates.length;
-        final int columnCount = ledStates[0].length;
-        final boolean[][] oldValues = new boolean[rowCount][columnCount];
-        for (int r = 0; r < rowCount; r++) {
-            System.arraycopy(ledStates[r], 0, oldValues[r], 0, columnCount);
-        }
-        return oldValues;
-    }
-
-
-    @Override
-    public String toString() {
-        final StringBuilder sb = new StringBuilder();
-        for (int r = 0; r < getRowCount(); r++) {
-            for (int c = 0; c < getColumnCount(); c++) {
-                sb.append(getValues()[r][c] ? "o" : ".");
-            }
-            sb.append("\n");
-        }
-
-        return sb.toString();
-    }
-
-    @Override
     public LedLetterFont getLedLetterFont() {
         return ledLetterFont;
     }
@@ -143,4 +114,62 @@ public class DefaultLedLetterModel implements LedLetterModel {
     public int getVerticalGap() {
         return verticalGap;
     }
+
+    public boolean[][] getCurrentValues() {
+        return currentValues;
+    }
+
+    public void setCurrentValues(boolean[][] currentValues) {
+        this.currentValues = currentValues;
+    }
+
+    @Override
+    public boolean[][] getValues(char c) {
+        return ledLetterFont.getLetterDescription(c).getValues();
+    }
+
+    public EventListenerList getListenerList() {
+        return listenerList;
+    }
+
+    public void setListenerList(EventListenerList listenerList) {
+        this.listenerList = listenerList;
+    }
+
+    @Override
+    public Color getLetterColor() {
+        return letterColor;
+    }
+
+    public void setLetterColor(Color letterColor) {
+        this.letterColor = letterColor;
+    }
+
+    @Override
+    public Color getLetterBackgroundColor() {
+        return letterBackgroundColor;
+    }
+
+    public void setLetterBackgroundColor(Color letterBackgroundColor) {
+        this.letterBackgroundColor = letterBackgroundColor;
+    }
+
+    @Override
+    public boolean isBlinking() {
+        return blinking;
+    }
+
+    public void setBlinking(boolean blinking) {
+        this.blinking = blinking;
+    }
+
+    @Override
+    public ILedDrawer getLedDrawer() {
+        return ledDrawer;
+    }
+
+    public void setLedDrawer(ILedDrawer ledDrawer) {
+        this.ledDrawer = ledDrawer;
+    }
+
 }

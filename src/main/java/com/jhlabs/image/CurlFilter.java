@@ -219,7 +219,7 @@ public class CurlFilter extends TransformFilter {
 
     protected void transformInverse(int x, int y, float[] out) {
 /*Fisheye
-		float mirrorDistance = width*centreX;
+        float mirrorDistance = width*centreX;
 		float mirrorRadius = width*centreY;
 		float cx = width*.5f;
 		float cy = height*.5f;

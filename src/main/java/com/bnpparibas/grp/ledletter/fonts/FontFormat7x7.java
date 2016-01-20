@@ -1,5 +1,9 @@
 package com.bnpparibas.grp.ledletter.fonts;
 
+import com.bnpparibas.grp.ledletter.HexUtils;
+
+import java.util.BitSet;
+
 /**
  * Adaptation of jfxtras MatrixPanel
  */
@@ -134,4 +138,33 @@ public enum FontFormat7x7 implements LetterDescription {
     public int height() {
         return 7;
     }
+
+    private boolean[][] values = null;
+
+    public void invalidate() {
+        values = null;
+    }
+
+    public void initialize() {
+        values = getValues();
+    }
+
+    public boolean[][] getValues() {
+        if (values != null) {
+            return values;
+        }
+
+        boolean[][] v = new boolean[height()][width()];
+        for (int j = 0; j < bytes() * width(); j += bytes()) {
+            for (int b = 0; b < bytes(); b++) {
+                BitSet bs = BitSet.valueOf(HexUtils.toBytes(getHexLetter().split(" ")[j + b]));
+                for (int k = 8 * b; k < Math.min(8 * (b + 1), height()); k++) {
+                    final int colIndex = (j / bytes());
+                    v[k][colIndex] = bs.get(7 - k + 8 * b);
+                }
+            }
+        }
+        return v;
+    }
+
 }

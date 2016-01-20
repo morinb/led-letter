@@ -122,7 +122,7 @@ public class FadeFilter extends PointFilter {
             return 2 * b - x;
         return x;
     }
-	
+    
 /*
 	public float star(float x, float y, int sides, float rMin, float rMax) {
 		float sideAngle = 2*Math.PI / sides;

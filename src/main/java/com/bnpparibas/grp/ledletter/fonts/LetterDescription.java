@@ -13,4 +13,10 @@ public interface LetterDescription {
     int width();
 
     int height();
+
+    void invalidate();
+
+    void initialize();
+
+    boolean[][] getValues();
 }

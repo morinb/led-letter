@@ -23,6 +23,15 @@ public enum LedLetterFont {
         return this.letterDescription;
     }
 
+    public LetterDescription getLetterDescription(char c) {
+        for (LetterDescription ld : getLetterDescriptions()) {
+            if (ld.getIntLetter() == c) {
+                return ld;
+            }
+        }
+        return getLetterDescriptions()[0];
+    }
+
     public int rowCount() {
         return getLetterDescriptions()[0].height();
     }
