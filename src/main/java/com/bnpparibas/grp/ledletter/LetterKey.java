@@ -1,4 +1,4 @@
-package com.bnpparibas.grp.ledletter.smooth;
+package com.bnpparibas.grp.ledletter;
 
 /**
  * @author morinb.

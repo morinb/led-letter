@@ -2,12 +2,13 @@ package com.bnpparibas.grp.ledletter.smooth;
 
 import com.bnpparibas.grp.ledletter.DefaultLedLetterModel;
 import com.bnpparibas.grp.ledletter.LedLetterModel;
+import com.bnpparibas.grp.ledletter.LedLetterPanel;
 import com.bnpparibas.grp.ledletter.fonts.LedLetterFont;
 
 import javax.swing.JFrame;
 import javax.swing.WindowConstants;
 import java.awt.BorderLayout;
-import java.awt.image.BufferedImageOp;
+import java.awt.Dimension;
 
 /**
  * @author morinb.
@@ -18,10 +19,15 @@ public class SmoothLedLetterPanelTest {
         JFrame f = new JFrame("Smooth Led Test");
         f.setLayout(new BorderLayout());
 
-        final LedLetterModel model = new DefaultLedLetterModel(LedLetterFont.LLF_7x9, 4, 4, 1, 1);
-        LedLetterPanel smooth = new LedLetterPanel(model, 60, 30);
-        smooth.setEffects(new BufferedImageOp[]{
-        });
+
+        LedLetterFont font = LedLetterFont.LLF_7x9;
+        Dimension ledDimension = new Dimension(4, 4);
+        Dimension gap = new Dimension(1, 1);
+
+        final LedLetterModel model = new DefaultLedLetterModel(font, ledDimension, gap);
+        LedLetterPanel smooth = new LedLetterPanel(model, LedLetterPanel.getNumberOfCharsForSpecifiedWidth(1600, false, model), 30);
+        System.out.println(LedLetterPanel.getNumberOfCharsForSpecifiedWidth(1600, true, model));
+        System.out.println(LedLetterPanel.getNumberOfCharsForSpecifiedWidth(1600, false, model));
 
         f.add(smooth, BorderLayout.CENTER);
         f.pack();
@@ -32,5 +38,6 @@ public class SmoothLedLetterPanelTest {
 
 
     }
+
 
 }

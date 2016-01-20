@@ -4,6 +4,7 @@ import com.bnpparibas.grp.ledletter.drawer.ILedDrawer;
 import com.bnpparibas.grp.ledletter.fonts.LedLetterFont;
 
 import java.awt.Color;
+import java.awt.Dimension;
 
 /**
  * <p>The <code>LedLetterModel</code> interface specifies the methods the
@@ -35,14 +36,9 @@ public interface LedLetterModel {
     int getColumnCount();
 
     /**
-     * @return the width of a Led.
+     * @return the led dimension.
      */
-    int getLedWidth();
-
-    /**
-     * @return the height of a Led.
-     */
-    int getLedHeight();
+    Dimension getLedDimension();
 
     /**
      * Adds a listener to the list that is notified each time a change
@@ -70,9 +66,7 @@ public interface LedLetterModel {
 
     LedLetterFont getLedLetterFont();
 
-    int getHorizontalGap();
-
-    int getVerticalGap();
+    Dimension getGap();
 
     Color getLetterColor();
 

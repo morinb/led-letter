@@ -1,6 +1,5 @@
-package com.bnpparibas.grp.ledletter.smooth;
+package com.bnpparibas.grp.ledletter;
 
-import com.bnpparibas.grp.ledletter.LedLetterModel;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
@@ -115,7 +114,6 @@ public class LedLetterPanel extends JComponent {
                     g.setColor(model.getLetterBackgroundColor());
                     g.fillRect(0, 0, width, height);
                 } else {
-                    System.out.println("Using old message, during generation of new one.");
                     selectedMessage = oldMessage;
                 }
             } else {
@@ -179,16 +177,17 @@ public class LedLetterPanel extends JComponent {
                 @Override
                 public void run() {
                     if (!lettersMap.containsKey(c)) {
-                        System.out.println("Creating image for '" + c + "'");
+                        final int ledWidth = model.getLedDimension().width;
+                        final int ledHeight = model.getLedDimension().height;
                         BufferedImage letterImage = new BufferedImage(letterSize, height, BufferedImage.TYPE_INT_ARGB);
                         Graphics2D letterGraphics = letterImage.createGraphics();
                         for (int row = 0; row < model.getRowCount(); row++) {
                             for (int col = 0; col < model.getColumnCount(); col++) {
-                                int x = model.getLedWidth() * col;
-                                int y = model.getLedHeight() * row;
+                                int x = ledWidth * col;
+                                int y = ledHeight * row;
                                 if (model.getValues(c)[row][col]) {
                                     letterGraphics.setPaint(getForeground());
-                                    model.getLedDrawer().drawLed(letterGraphics, x, y, model.getLedWidth() - 1, model.getLedHeight() - 1);
+                                    model.getLedDrawer().drawLed(letterGraphics, x, y, ledWidth - 1, ledHeight - 1);
                                 } else {
                                     letterGraphics.setPaint(new Color(255, 255, 255, 255));
                                 }
@@ -239,9 +238,9 @@ public class LedLetterPanel extends JComponent {
         setBackground(model.getLetterBackgroundColor());
         setForeground(model.getLetterColor());
 
-        this.letterSize = model.getLedWidth() * model.getColumnCount() + 1 + model.getHorizontalGap();
+        this.letterSize = model.getLedDimension().width * model.getColumnCount() + 1 + model.getGap().width;
         this.width = charNumber * letterSize;
-        this.height = model.getLedHeight() * model.getRowCount() + 1 + model.getVerticalGap();
+        this.height = model.getLedDimension().height * model.getRowCount() + 1 + model.getGap().height;
         final String spaces = spaces(charNumber);
         this.message = spaces + spaces;
 
@@ -284,5 +283,21 @@ public class LedLetterPanel extends JComponent {
                 repaint();
             }
         });
+    }
+
+    public static int getNumberOfCharsForSpecifiedWidth(int wantedWidth, boolean allowOverflow, LedLetterModel model) {
+        int numberOfChars = 0;
+        int letterSize = model.getLedLetterFont().columnCount() * model.getLedDimension().width + 1 + model.getGap().width;
+
+        numberOfChars = wantedWidth / letterSize;
+        if (wantedWidth % letterSize != 0) {
+            // Division has some rest
+            if (allowOverflow) {
+                numberOfChars = numberOfChars + 1;
+            }
+        }
+
+
+        return numberOfChars;
     }
 }

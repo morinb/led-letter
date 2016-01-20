@@ -6,38 +6,35 @@ import com.bnpparibas.grp.ledletter.fonts.LedLetterFont;
 
 import javax.swing.event.EventListenerList;
 import java.awt.Color;
+import java.awt.Dimension;
 
 /**
  * @author morinb.
  */
 public class DefaultLedLetterModel implements LedLetterModel {
     private final LedLetterFont ledLetterFont;
-    private final int horizontalGap;
-    private final int verticalGap;
+    private final Dimension ledDimension;
     private boolean[][] currentValues;
     private boolean[][] oldValues;
     private EventListenerList listenerList = new EventListenerList();
-    private int ledWidth;
-    private int ledHeight;
     private Color letterColor;
     private Color letterBackgroundColor;
     private boolean blinking;
     private ILedDrawer ledDrawer;
+    private Dimension gap;
 
-    public DefaultLedLetterModel(LedLetterFont ledLetterFont, int ledWidth, int ledHeight) {
-        this(ledLetterFont, ledWidth, ledHeight, 2 * ledWidth, 0);
+    public DefaultLedLetterModel(LedLetterFont ledLetterFont, Dimension ledDimension) {
+        this(ledLetterFont, ledDimension, new Dimension(2 * ledDimension.width, 0));
     }
 
-    public DefaultLedLetterModel(LedLetterFont ledLetterFont, int ledWidth, int ledHeight, int horizontalGap, int verticalGap) {
-        this(ledLetterFont, ledWidth, ledHeight, horizontalGap, verticalGap, Color.RED, Color.BLACK, false, LedDrawerFactory.getDefaultDrawer());
+    public DefaultLedLetterModel(LedLetterFont ledLetterFont, Dimension ledDimension, Dimension gap) {
+        this(ledLetterFont, ledDimension, gap, Color.RED, Color.BLACK, false, LedDrawerFactory.getDefaultDrawer());
     }
 
-    public DefaultLedLetterModel(LedLetterFont ledLetterFont, int ledWidth, int ledHeight, int horizontalGap, int verticalGap, Color letterColor, Color letterBackgroundColor, boolean blinking, ILedDrawer drawer) {
+    public DefaultLedLetterModel(LedLetterFont ledLetterFont, Dimension ledDimension, Dimension gap, Color letterColor, Color letterBackgroundColor, boolean blinking, ILedDrawer drawer) {
         this.ledLetterFont = ledLetterFont;
-        this.ledWidth = ledWidth;
-        this.ledHeight = ledHeight;
-        this.horizontalGap = horizontalGap;
-        this.verticalGap = verticalGap;
+        this.ledDimension = ledDimension;
+        this.gap = gap;
         this.letterColor = letterColor;
         this.letterBackgroundColor = letterBackgroundColor;
         this.blinking = blinking;
@@ -67,21 +64,8 @@ public class DefaultLedLetterModel implements LedLetterModel {
     }
 
     @Override
-    public int getLedWidth() {
-        return ledWidth;
-    }
-
-    public void setLedWidth(int ledWidth) {
-        this.ledWidth = ledWidth;
-    }
-
-    @Override
-    public int getLedHeight() {
-        return ledHeight;
-    }
-
-    public void setLedHeight(int ledHeight) {
-        this.ledHeight = ledHeight;
+    public Dimension getLedDimension() {
+        return ledDimension;
     }
 
     @Override
@@ -106,14 +90,10 @@ public class DefaultLedLetterModel implements LedLetterModel {
     }
 
     @Override
-    public int getHorizontalGap() {
-        return horizontalGap;
+    public Dimension getGap() {
+        return gap;
     }
 
-    @Override
-    public int getVerticalGap() {
-        return verticalGap;
-    }
 
     public boolean[][] getCurrentValues() {
         return currentValues;
