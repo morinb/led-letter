@@ -106,7 +106,6 @@ public class LedLetterPanel extends JComponent {
 
    @Override
    protected void paintComponent(Graphics g) {
-      System.out.println("repaint");
       super.paintComponent(g);
       final int imageWidth = letterSize * message.length() + 2 * width;
       String selectedMessage = message;
@@ -160,20 +159,11 @@ public class LedLetterPanel extends JComponent {
       Graphics2D g2 = (Graphics2D) g;
       g2.setComposite(AlphaComposite.SrcOver);
 
-      //System.out.println("Shadows width : " + shadows.getWidth()+" screen : "+width);
       g2.drawImage(shadows, 0, 0, shadows.getWidth(), shadows.getHeight(), null);
 
 
       g2.dispose();
    }
-
-/*   private String spaces(int size) {
-      StringBuilder sb = new StringBuilder();
-      for (int i = 0; i < size; i++) {
-         sb.append(' ');
-      }
-      return sb.toString();
-   }*/
 
    /**
     * Uses 1 thread per unique character to draw images.
@@ -318,7 +308,6 @@ public class LedLetterPanel extends JComponent {
       scrollTimer = new Timer(scrollSpeed, new AbstractAction("Scroll Timer Action") {
          @Override
          public void actionPerformed(ActionEvent e) {
-            System.out.println("Iterating");
             scrollIndex += scrollStep * scrollWay.getWay();
 
             final int messageSize = message.length() * letterSize;
@@ -348,7 +337,6 @@ public class LedLetterPanel extends JComponent {
 
    public void setCharNumber(int charNumber) {
       this.charNumber = charNumber;
-      System.out.println(charNumber);
       imageMap.clear();
       lettersMap.clear();
       refreshState();
