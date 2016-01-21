@@ -79,7 +79,7 @@ public class SCNoise implements Function1D, Function2D, Function3D {
       fy = y - iy;
       iz = floor(z);
       fz = z - iz;
-		
+      
 		/* Perform the sparse convolution. */
       int m = 2;
       for (i = -m; i <= m; i++) {

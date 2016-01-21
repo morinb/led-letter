@@ -15,6 +15,8 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.event.ActionEvent;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 import java.awt.image.BufferedImageOp;
@@ -27,6 +29,7 @@ import java.util.Set;
  */
 public class LedLetterPanel extends JComponent {
 
+   final int[] oldWidth = {0};
    private Thread imageThread;
    private Map<Character, BufferedImage> lettersMap = Maps.newHashMap();
    private int width;
@@ -45,15 +48,25 @@ public class LedLetterPanel extends JComponent {
    private BufferedImage shadows;
    private String oldMessage = null;
 
-   public LedLetterPanel(final LedLetterModel model, final int charNumber, final int scrollSpeed) {
+   public LedLetterPanel(final LedLetterModel model, final int scrollSpeed) {
       this.model = model;
-      this.charNumber = charNumber;
       this.scrollSpeed = scrollSpeed;
 
       effects = new BufferedImageOp[0];
 
       this.setModel(model);
 
+      addComponentListener(new ComponentAdapter() {
+         @Override
+         public void componentResized(ComponentEvent e) {
+            int width = e.getComponent().getWidth();
+            if (oldWidth[0] != width) {
+               oldWidth[0] = width;
+               int charNumber = LedLetterPanel.getNumberOfCharsForSpecifiedWidth(e.getComponent().getWidth(), false, model);
+               setCharNumber(charNumber);
+            }
+         }
+      });
 
    }
 
@@ -85,13 +98,17 @@ public class LedLetterPanel extends JComponent {
       oldMessage = this.message;
       this.message = message;
 
+      int charNumber = LedLetterPanel.getNumberOfCharsForSpecifiedWidth(getWidth(), false, model);
+      setCharNumber(charNumber);
+
       refreshState();
    }
 
    @Override
    protected void paintComponent(Graphics g) {
+      System.out.println("repaint");
       super.paintComponent(g);
-      final int imageWidth = width * 3;
+      final int imageWidth = letterSize * message.length() + 2 * width;
       String selectedMessage = message;
       if (selectedMessage.trim().isEmpty()) {
          g.setColor(model.getLetterBackgroundColor());
@@ -123,14 +140,22 @@ public class LedLetterPanel extends JComponent {
             }, "Image-Generator-Thread");
             imageThread.start();
          }
+         try {
+            imageThread.join();
+         } catch (InterruptedException e) {
+            e.printStackTrace();
+         }
 
       }
       BufferedImage bi = imageMap.get(selectedMessage);
-      int scrollI = scrollIndex;
-      g.translate(scrollI, 0);
-      g.drawImage(bi, 0, 0, bi.getWidth(), bi.getHeight(), null);
-      g.translate(-scrollI, 0);
+      if (bi != null) {
 
+         int scrollI = scrollIndex;
+         g.translate(scrollI, 0);
+         g.drawImage(bi, 0, 0, bi.getWidth(), bi.getHeight(), null);
+         g.translate(-scrollI, 0);
+
+      }
       // Draw shadow
       Graphics2D g2 = (Graphics2D) g;
       g2.setComposite(AlphaComposite.SrcOver);
@@ -216,7 +241,7 @@ public class LedLetterPanel extends JComponent {
          final int letterX = (charNumber + i) * letterSize;
          final int letterY = 0;
          final BufferedImage bi = lettersMap.get(c);
-         g2.drawImage(bi, letterX, letterY, bi.getWidth(), bi.getHeight()+1, null);
+         g2.drawImage(bi, letterX, letterY, bi.getWidth(), bi.getHeight() + 1, null);
       }
 
 
@@ -240,12 +265,10 @@ public class LedLetterPanel extends JComponent {
 
       this.letterSize = model.getLedDimension().width * model.getColumnCount() + 1 + model.getGap().width;
       this.width = getWidth() == 0 ? 1000 : getWidth();
-      System.out.println("Width: "+width);
 
       this.height = model.getLedDimension().height * model.getRowCount() + 1 + model.getGap().height;
 
       shadows = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
-
 
       Color transparent = new Color(0, 0, 0, 0);
       GradientPaint gradientPaintLeft = new GradientPaint(
@@ -266,10 +289,8 @@ public class LedLetterPanel extends JComponent {
 
       g2.dispose();
 
-      if (scrollTimer != null && !scrollTimer.isRunning()) {
-         scrollTimer.start();
-      }
-      repaint();
+      createTimer();
+
 
       this.setPreferredSize(new Dimension(width, height));
       this.setMinimumSize(new Dimension(width, height));
@@ -281,11 +302,10 @@ public class LedLetterPanel extends JComponent {
             scrollIndex = 0;
             break;
          case LEFT_TO_RIGHT:
-            scrollIndex = -2 * width;
+            scrollIndex = -width - (message != null ? message.length() : 0) * letterSize;
             break;
       }
 
-      createTimer();
 
    }
 
@@ -298,35 +318,28 @@ public class LedLetterPanel extends JComponent {
       scrollTimer = new Timer(scrollSpeed, new AbstractAction("Scroll Timer Action") {
          @Override
          public void actionPerformed(ActionEvent e) {
+            System.out.println("Iterating");
             scrollIndex += scrollStep * scrollWay.getWay();
 
+            final int messageSize = message.length() * letterSize;
+            final int limit = scrollWay.getWay() * (width + messageSize);
 
             switch (scrollWay) {
                case LEFT_TO_RIGHT:
-                  if (scrollIndex >= width) {
-                     scrollIndex = -2 * width;
+                  if (scrollIndex >= 0) {
+                     scrollIndex = -(width + messageSize);
                   }
                   break;
                case RIGHT_TO_LEFT:
-                  // restart when limit size has been scrolled.
-                  /*int limit = 2 * letterSize * charNumber;
-                  if (scrollIndex >= limit) {
-                     scrollIndex = 0;
-                  }
-                  scrollIndex += scrollStep;
-                  */
-                  
-                  
-                  final int limit = Math.min(-2 * width, -2*letterSize*charNumber);
-                  System.out.println(scrollIndex+" / "+limit+" 2xs: "+(2*shadows.getWidth())+" ("+(-2*width) + " "+(-width) + " 0 "+ width+  " " +2*width+")");
                   if (scrollIndex <= limit) {
-                     scrollIndex = -scrollStep * scrollWay.getWay();
+                     scrollIndex = 0;
                   }
                   break;
             }
             repaint();
          }
       });
+      scrollTimer.start();
    }
 
    public int getCharNumber() {
@@ -339,10 +352,5 @@ public class LedLetterPanel extends JComponent {
       imageMap.clear();
       lettersMap.clear();
       refreshState();
-      if (scrollTimer != null && !scrollTimer.isRunning()) {
-         scrollTimer.start();
-      }
-      
-      repaint();
    }
 }

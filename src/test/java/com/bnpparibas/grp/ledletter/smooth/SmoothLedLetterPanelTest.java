@@ -9,8 +9,6 @@ import javax.swing.JFrame;
 import javax.swing.WindowConstants;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
 
 /**
  * @author morinb.
@@ -27,9 +25,7 @@ public class SmoothLedLetterPanelTest {
       Dimension gap = new Dimension(1, 1);
 
       final LedLetterModel model = new DefaultLedLetterModel(font, ledDimension, gap);
-      final LedLetterPanel ledLetterPanel = new LedLetterPanel(model, LedLetterPanel.getNumberOfCharsForSpecifiedWidth(1600, true, model), 30);
-      System.out.println(LedLetterPanel.getNumberOfCharsForSpecifiedWidth(1600, true, model));
-      System.out.println(LedLetterPanel.getNumberOfCharsForSpecifiedWidth(1600, false, model));
+      final LedLetterPanel ledLetterPanel = new LedLetterPanel(model, 30);
 
       f.add(ledLetterPanel, BorderLayout.CENTER);
       f.pack();
@@ -38,19 +34,6 @@ public class SmoothLedLetterPanelTest {
 
       ledLetterPanel.displayMessage("/!\\ Warning /!\\ Application will restart in 5 minutes.");
 
-      final int[] oldWidth = {0};
-      f.addComponentListener(new ComponentAdapter() {
-         @Override
-         public void componentResized(ComponentEvent e) {
-            int width = e.getComponent().getWidth();
-            if (oldWidth[0] != width) {
-               oldWidth[0] = width;
-               System.out.println(e);
-               int charNumber = LedLetterPanel.getNumberOfCharsForSpecifiedWidth(e.getComponent().getWidth(), false, model);
-               ledLetterPanel.setCharNumber(charNumber);
-            }
-         }
-      });
 
    }
 
